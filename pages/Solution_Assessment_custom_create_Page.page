@@ -1,0 +1,2 @@
+<apex:page standardController="Opportunity" extensions="SolutionAssessmentCustomCreate" action="{!NewSolutionAssessment}">
+</apex:page>

@@ -1,0 +1,8 @@
+<apex:page contenttype="text/xml"  controller="taskxmlcontroller" > 
+<data wiki-section="Timeline">
+<apex:repeat value="{!cleanedtask}" var="e" >
+<event start="{!e.ActivityDate}" title="{!e.subject}"  >
+<apex:outputText value="{!e.description}" />
+</event>
+</apex:repeat>
+</data></apex:page>

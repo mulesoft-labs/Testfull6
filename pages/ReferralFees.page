@@ -1,0 +1,6 @@
+<apex:page showHeader="true" >
+<apex:outputPanel id="thePanel">
+    <apex:enhancedList type="Partner_Influence__c" height="300" />
+    </apex:outputPanel>
+
+</apex:page>

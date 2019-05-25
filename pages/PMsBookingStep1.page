@@ -1,0 +1,59 @@
+<apex:page standardController="Opportunity"
+           extensions="CMsBookingController" tabStyle="Opportunity" lightningStyleSheets="true">
+<head>
+  <!-- Import the Design System style sheet -->
+  <apex:slds />
+    
+</head>   
+<script>
+  function confirmCancel() {
+      var isCancel = confirm("Are you sure you wish to cancel?");
+      if (isCancel) return true;
+  
+     return false;
+  }  
+  </script>
+   <!-- REQUIRED SLDS WRAPPER -->
+  <div class="slds-scope">   
+  <apex:sectionHeader title="Opportunity" subtitle="Step 1 of 4"/>
+      <apex:form >
+      <apex:pageBlock title="Children Opportunity Creation" mode="edit">
+        <apex:pageBlockButtons >
+		<apex:commandButton action="{!step2}" rerender="rerenderId" status="pageStatus" value="Create"/>
+          <apex:commandButton action="{!cancel}" value="Cancel" 
+                              onclick="return confirmCancel()" immediate="true"/>
+		  <apex:commandButton action="{!backToStep2}" status="pageStatus" value="Edit Existing Child Opportunity"/>
+          </apex:pageBlockButtons>
+    	<apex:pageMessages id="rerenderId"/>
+          
+        <apex:actionStatus id="pageStatus">
+    		<apex:facet name="start">
+    			<div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;">
+        			&nbsp;
+    		</div>
+            <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 25% 50%">
+                <div style="display: inline-block; padding: 2px; background-color: #fff; width: 250px;">
+                    <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                    <span style="display: inline-block; padding: 10px 0px;">Creating Child Opportunity...</span>
+                </div>
+            </div>
+    		</apex:facet>
+		</apex:actionStatus>
+      <apex:pageBlockSection title="Opportunity Information" columns="1">
+          <apex:facet name="header">
+              <apex:outputpanel >
+                  <apex:outputText style="font-weight:bold;font-size:13px;float:left;" value="{!opportunity.Name}"/>
+                  <apex:commandLink style="Float:right;" value="Edit Child Opp" action="{!backToStep2}" reRender="f"/>
+              </apex:outputpanel>
+          </apex:facet>
+          <apex:pageBlockSectionItem >
+			<apex:outputLabel >Parent Opportunity</apex:outputLabel>
+            <apex:outputLink value="/{!opportunity.Id }">{!opportunity.Name }</apex:outputLink>
+          </apex:pageBlockSectionItem>
+          <apex:inputField id="oppChildOpp" value="{!opportunity.Num_of_Child_Opps__c}"/>
+      </apex:pageBlockSection>
+    </apex:pageBlock>
+  </apex:form>
+    </div>
+  <!-- / REQUIRED SLDS WRAPPER -->
+</apex:page>

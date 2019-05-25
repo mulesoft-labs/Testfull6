@@ -1,0 +1,70 @@
+<apex:page controller="CMsApprovalComponent">
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"/>
+    <apex:includeScript value="{!URLFOR($Resource.jqueryTablesorter, 'jquery.tablesorter.min.js')}"/>
+    <script type="text/javascript">
+        $j = jQuery.noConflict();
+        $j(document).ready(function () {
+            $j('table thead').addClass('myTableHeader');
+            $j('table tbody').addClass('myTableBody');
+            $j("[id$=theaddrs]").tablesorter();
+
+        });
+    </script>
+    
+    <style>
+        .sticky {
+            position: fixed;
+            top: 0;
+            width: 10%;
+        }
+
+        .sticky+.content {
+            padding-top: 50px;
+        }
+        
+        .myTableBody {
+
+            height:10px;
+            
+        }
+        .myTableHeader {
+            position: relative;
+            display: relative;
+            table-layout: fixed;
+            overflow:hidden;
+        }
+
+        table th{
+            top: 0;
+            position: sticky;
+        }
+
+    </style>  
+    <apex:pageBlock title="Quotes to Approve">
+	        <apex:outputText rendered="{!(allApprovals.size = 0)}" value="There are no quotes pending your approval."/>    
+        	<apex:pageBlockTable value="{!allApprovals}" var="approval" styleClass="tablesorter" id="theaddrs" rendered="{!(allApprovals.size != 0)}">
+                <apex:column value="{!approval.Quote__c}" />
+                <apex:column value="{!approval.Quote__r.SBQQ__Opportunity2__c}" />
+                <apex:column >
+                    <apex:facet name="header">Opportunity Owner</apex:facet>
+                    	<apex:outputField value="{!approval.Quote__r.SBQQ__Opportunity2__r.Owner.Name}"/>
+                </apex:column>                
+                <apex:column value="{!approval.Quote__r.SBQQ__StartDate__c}" />
+                <apex:column value="{!approval.Quote__r.SBQQ__EndDate__c}" />                
+                <apex:column value="{!approval.Quote__r.Subscription_Amount__c}" />
+                <apex:column value="{!approval.Quote__r.Services_Net_Total__c}" />                
+                <apex:column >
+                    <apex:facet name="header">Approval Requested For</apex:facet>
+                    	<apex:outputField value="{!approval.Rule2__c}"/>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Approval Link</apex:facet>
+                    <!-- this cell in the table will have a hyperlink that opens in a new tab -->
+                    <apex:outputLink value="/{!approval.Id}" target="_blank">
+                    	<apex:outputField value="{!approval.Name}"/>
+                    </apex:outputLink>
+                </apex:column>
+                <apex:column value="{!approval.Date_Requested__c}" />                
+        	</apex:pageBlockTable>
+    </apex:pageBlock>
+</apex:page>

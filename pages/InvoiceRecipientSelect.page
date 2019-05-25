@@ -1,0 +1,45 @@
+<apex:page standardcontroller="Invoice__c" extensions="InvoiceRecipientSelectController" >
+
+<apex:form >
+<apex:pageBlock >
+
+<apex:pageBlockSection title="Select Invoice Recipients" collapsible="false" columns="1">
+
+<apex:pageBlockSectionItem rendered="{!isInvoiceFinalized}">
+<apex:pageBlockTable value="{!accountContacts}" var="ac">
+
+<apex:column headerValue="Select">
+<apex:inputField value="{!ac.Email_Selected__c}"/>
+
+</apex:column>
+
+<apex:column headerValue="Contact Name">
+{!ac.name}
+
+</apex:column>
+
+<apex:column headerValue="Email">
+{!ac.email}
+
+</apex:column>
+
+</apex:pageBlockTable>
+<apex:commandButton value="Email Selected Contacts" action="{!emailSelectedContacts}"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!isinvoicefinalized==false}">
+
+Sorry, you need to finalize the invoice first.
+
+<apex:commandButton value="Go Back" action="{!goBack}"/>
+
+</apex:pageBlockSectionItem>
+</apex:pageBLockSection>
+
+
+
+</apex:pageBlock>
+
+</apex:form>
+
+</apex:page>

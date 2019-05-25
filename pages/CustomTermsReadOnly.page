@@ -1,0 +1,89 @@
+<apex:page standardController="SBQQ__Quote__c" extensions="CommercialTermsExtension" showHeader="false" standardStylesheets="true" >
+<head>
+   <meta charset="utf-8"></meta>
+  <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"></link>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</head>
+<style>
+body { font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; font-weight: 500; line-height: 12px; color:#4a4a56;}
+
+  .input{
+    text-align: left;
+  }
+  .label{}
+
+  body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock {
+    background-color: WHITE;
+    border-bottom: 1px solid WHITE;
+    border-left: 1px solid WHITE;
+    border-right: 1px solid WHITE;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.bPageBlock {
+    border-top: 1px solid WHITE !important;
+}
+
+.check{
+  text-align: left;
+}
+.labels{
+  text-align: left;
+}
+
+.imgs{
+  margin-left:2px;
+  margin-right:5px;
+  margin-bottom:5px;
+}
+.bPageBlock .detailList tr td, .bPageBlock .detailList tr th, .hoverDetail .bPageBlock .detailList tr td, .hoverDetail .bPageBlock .detailList tr th {
+    /*border-bottom: 1px solid WHITE;*/
+    border-top: 1px solid WHITE;
+}
+body .bPageBlock .detailList tr td, body .bPageBlock .detailList tr th, body table.list tr td, body table.list tr th, body .hoverDetail .bPageBlock .detailList tr td, body .hoverDetail .bPageBlock .detailList tr th {
+     border-color: WHITE; 
+}
+.bPageBlock .detailList .data2Col {
+    padding-right: 2px;
+    padding-bottom: 2px;
+    padding-left: 10px;
+    text-align: left;
+    width: 99%;
+}
+body .bPageBlock .pbBody .data2Col{
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+</style>
+<script>
+$ = jQuery.noConflict();
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+</script>
+  <body style="background-color: WHITE;">
+    <apex:form >
+    <apex:actionRegion >
+    <apex:pageMessages id="msgs"></apex:pageMessages>
+        <apex:pageblock id="blockA">
+        <apex:pageBlockSection columns="1">
+          <apex:pageBlockSection columns="2">
+             <apex:outputText label="Proposed Custom Terms" styleClass="input" style="width:70% !important;" value="{!sbqq[0].Special_Terms__c}"><apex:actionSupport action="{!SaveTerms}" event="onchange"/><a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.SBQQ__Quote__c.fields.Special_Terms__c.InlineHelpText}"><apex:image url="{!$Resource.questionmark}" width="15" height="15"/></a>  </apex:outputText>
+         
+				
+              <apex:outputText label="Approved Custom Terms" styleClass="input" style="width:70% !important;" value="{!sbqq[0].Approved_Special_Terms__c}"><apex:actionSupport action="{!SaveApprovedTerms}" event="onchange"/><a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.SBQQ__Quote__c.fields.Approved_Special_Terms__c.InlineHelpText}"><apex:image url="{!$Resource.questionmark}" width="15" height="15"/></a>  </apex:outputText>
+         
+          </apex:pageBlockSection>
+ 
+
+       </apex:pageBlockSection>  
+      </apex:pageblock>
+    </apex:actionRegion>  
+  </apex:form>
+</body>
+</apex:page>

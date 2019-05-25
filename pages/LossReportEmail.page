@@ -1,0 +1,4 @@
+<apex:page standardController="Loss_Report__c" extensions="WinLossReportController" action="{!sendLossreportEmail}">
+  <apex:pageMessages />
+  <apex:detail inlineEdit="true" showChatter="true" subject="{!Loss_Report__c.id}"/>
+</apex:page>

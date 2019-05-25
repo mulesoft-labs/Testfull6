@@ -1,0 +1,176 @@
+<apex:page controller="timeLinecon" sidebar="false" >
+
+    <!-- uses jQuery.ajax() for loading xml data -->
+    <apex:includeScript value="{!URLFOR($Resource.jquery,'js/jquery-1.4.1.min.js')}" />    <script>jQuery.noConflict();</script>
+ 
+  
+<!-- Include the MIT timeline library and CSS
+ this version adds xmlParse to go from xml to timeline format 
+  
+ ron hess , rhess@salesforce.com 3/14/2010
+ -->
+
+<!--<apex:includescript value="{!$Resource.timelineapi}" />  <apex:stylesheet value="{!$Resource.Timeline_style}" />   -->
+<apex:includescript value="{!$Resource.Timeline_mit_lib}" />  <apex:stylesheet value="{!$Resource.Timeline_style}" />    
+<select id= "reporttype" onchange='secondsel();'>
+  <option value="Task">Task</option>
+  <option value="workitem">Work Item</option>
+    <option value="Timelog">Time log</option>
+
+</select>
+<select id= "datetype">
+  <option value="completed date">Completed date</option>
+  <option value="start date">Created Date</option>
+  <option value="due date">Due Date</option>
+
+</select>
+<button type="button" onclick="loadTimeline();">Submit</button>
+
+
+<apex:outputPanel id="main" >
+
+
+    <div id="my-timelinecomp" class="timeline-default expandoFeedContainer" style="height:540px; border: 1px solid #aaa">
+    Loading, please wait...
+    </div>
+
+</apex:outputPanel>
+<script>
+ 
+function secondsel()
+{
+  var SelValue = document.getElementById('reporttype').value;
+if (SelValue =='Timelog')
+{
+ document.getElementById('datetype').style.visibility='hidden'
+ 
+ 
+}
+else
+{
+document.getElementById('datetype').style.visibility='visible'
+ 
+}
+}
+    function loadTimeline() {   
+  
+    var theTimeLine = null; 
+ 
+     
+        if ( theTimeLine != null ) { return; } 
+        
+        var theme = Timeline.ClassicTheme.create();
+        
+        theme.event.label.width = 300; 
+        theme.ether.backgroundColors.unshift("transparent");
+        
+        theme.mouseWheel = 'scroll'; // 'default', 'zoom', 'scroll' 
+        var eventSource = new Timeline.DefaultEventSource();
+    
+        var bandInfos = [
+            Timeline.createBandInfo({
+                eventSource: eventSource,
+                width:          "80%", 
+                intervalUnit:   Timeline.DateTime.MONTH, 
+                theme: theme,
+                intervalPixels: 450
+                }),
+            Timeline.createBandInfo({
+                eventSource: eventSource,
+                showEventText: false,
+                trackHeight: 0.5, 
+                trackGap: 0.2,
+                width:          "20%",  
+                intervalUnit:   Timeline.DateTime.YEAR, 
+                theme: theme,
+                intervalPixels: 200
+                })      
+        ];
+        
+        bandInfos[1].syncWith = 0;
+        bandInfos[1].highlight = true;
+
+        
+        for (var i = 0; i < bandInfos.length; i++) {
+                bandInfos[i].decorators = [
+                    new Timeline.SpanHighlightDecorator({
+                        startDate:  "{!tod_ay}",
+                        endDate:    "{!tomorr_ow}",
+                        color:      "#FFC080", // set color explicitly
+                        //color: "#CCFFFF",
+                        opacity:    70,
+                        startLabel: "",
+                        endLabel:   "today",
+                        theme:      theme
+                    })
+                ];
+            }
+
+        theTimeLine = Timeline.create( document.getElementById("my-timelinecomp"), bandInfos );
+        
+           var list1val=document.getElementById('reporttype').value;
+         var list2val=document.getElementById('datetype').value;
+         var url1='';
+if (list1val== "Task")
+   {
+   url1='apex/taskxml?Test1='+list1val+'&Test2='+list2val;
+   }
+else if (list1val== "workitem")
+   {
+   url1='/apex/workitemxml?Test1='+list1val+'&Test2='+list2val;
+   }
+   else
+    {
+   url1='apex/timelogxml?Test1='+list1val;
+   }
+
+    
+     
+     
+        eventSource.loadXML(    XML.parse( jQuery.ajax({
+                        type: "GET", url: url1, async: false }).responseText 
+                      ),    "{!JSENCODE($CurrentPage.URL)}" );  
+        
+        var minDate = theTimeLine.getBand(0).getMinVisibleDate();
+        var maxDate = theTimeLine.getBand(0).getMaxVisibleDate();     
+    
+        //setTimeout("jQuery('#about').slideUp('slow');",5*1000); // show the about for a few seconds
+        jQuery('#about').slideUp('slow'); // this skips showing the about block
+    }  
+    
+    var resizeTimerID = null;
+    window.onResize = function() {
+        if (resizeTimerID == null) {
+            resizeTimerID = window.setTimeout(function() {
+                resizeTimerID = null;
+                theTimeLine.layout();
+            }, 500);
+        }
+    } 
+
+
+    function addLoadEvent(func) { 
+       var oldonload = window.onload;
+       if (typeof window.onload != 'function') {
+          window.onload = func;
+       } else {
+          window.onload = function() {
+             oldonload();
+             func();
+            }
+        }
+     }
+    
+    addLoadEvent( loadTimeline );                   
+    
+    
+</script>
+<style>
+#about { padding-top: 4px; }
+.timeline-band-layer-inner td { color: #cccccc; 
+ background: url("/img/alohaSkin/feeds/cloud.png") no-repeat scroll right top transparent;
+}
+#timeline-band-layer-inner { background: transparent; }
+.timeline-band-inner { overflow-x:hidden; overflow-y:scroll;}
+</style>
+</apex:page>

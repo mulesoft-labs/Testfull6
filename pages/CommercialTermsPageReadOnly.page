@@ -1,0 +1,590 @@
+<apex:page docType="html-5.0" standardController="SBQQ__Quote__c" extensions="CommercialTermsExtension" showHeader="false" standardStylesheets="true" >
+<head>
+   <meta charset="utf-8"></meta>
+  <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"></link>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</head>
+<style>
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body { font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; font-weight: 500; line-height: 12px; color:#4a4a56;}
+
+.input{
+    text-align: left;
+  }
+.label{}
+
+  body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock {
+    background-color: WHITE;
+    border-bottom: 1px solid WHITE;
+    border-left: 1px solid WHITE;
+    border-right: 1px solid WHITE;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.bPageBlock {
+    border-top: 1px solid WHITE !important;
+}
+
+.dateFormat{
+    display:none;
+}
+
+.check{
+  text-align: left;
+}
+
+.check1{
+  text-align: right;
+}
+
+.message {
+    background-color: WHITE;
+    }
+.labels{
+  text-align: left;
+}
+.warningM3, .warningM2, .warningS1 {
+    border-color: WHITE; 
+}
+ h4 {
+    font-size: 14px;
+    color:RED;
+}
+
+.warningM3 .msgIcon, .warningMedium {
+    background-image: none;
+    background-position: 0 0;
+}
+.imgs{
+  margin-left:2px;
+  margin-right:5px;
+  margin-bottom:5px;
+}
+.bPageBlock .detailList tr td, .bPageBlock .detailList tr th, .hoverDetail .bPageBlock .detailList tr td, .hoverDetail .bPageBlock .detailList tr th {
+    /*border-bottom: 1px solid WHITE;*/
+    border-top: 1px solid WHITE;
+}
+body .bPageBlock .detailList tr td, body .bPageBlock .detailList tr th, body table.list tr td, body table.list tr th, body .hoverDetail .bPageBlock .detailList tr td, body .hoverDetail .bPageBlock .detailList tr th {
+     border-color: WHITE; 
+}
+.bPageBlock .detailList .data2Col {
+    padding-right: 2px;
+    padding-bottom: 2px;
+    padding-left: 10px;
+    text-align: left;
+    width: 99%;
+}
+body .bPageBlock .pbBody .data2Col{
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+#j_id0\3a j_id2\3a blockA\3a j_id4\3a j_id5\3a outers > table > tbody > tr > td:nth-child(4){
+
+  width:32%;
+  padding-left:9px;
+}
+#j_id0\3a j_id2\3a blockA\3a j_id4\3a j_id5\3a outers > table > tbody > tr > td:nth-child(2){
+  padding-left:20px;
+}
+#j_id0\3a j_id2\3a blockA\3a j_id4\3a j_id5\3a outers > table > tbody > tr > td:nth-child(1){
+  padding-right:20px;
+}
+#floatButton{
+position: fixed;
+width:100%
+}
+
+</style>
+<script>
+$ = jQuery.noConflict();
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+</script>
+  <body style="background-color: WHITE;">
+    <apex:form >
+        <apex:pageblock id="blockA">
+
+        <apex:pageBlockSection columns="1">
+        
+          <apex:pageBlockSection columns="1">
+          <apex:outputPanel id="outer" styleClass="panel">
+        <apex:outputPanel id="outers" styleClass="panel">
+          <table class="detailList" align="right" >
+            <tr>
+            <td class="labelCol" ><apex:outputLabel styleClass="check" value="Payment Terms"/></td>
+              <td><apex:outputField styleClass="check" value="{!sbqq[0].SBQQ__PaymentTerms__c}"></apex:outputField></td>
+               
+               <td class="labelCol" ><apex:outputLabel styleClass="check" value="Custom Invoice Schedule"/></td>   
+                <td class="dataCol"><apex:outputField styleClass="input" style="width:55% !important;" value="{!sbqq[0].Custom_Payment_Schedule__c}"><a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.SBQQ__Quote__c.fields.Custom_Payment_Schedule__c.InlineHelpText}"><apex:image url="{!$Resource.questionmark}" width="15" height="15"/></a>  </apex:outputField></td>
+                </tr>
+            </table>
+        </apex:outputPanel>
+        </apex:outputPanel>
+        </apex:pageBlockSection>
+         
+<!--****************************************************************************************************************************************************-->
+          <apex:pageBlockSection columns="1">
+             <apex:inputCheckbox disabled="true"  styleClass="check" value="{!sbqq[0].Renewal_Price_Fixing_v2__c}" ><a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.SBQQ__Quote__c.fields.Renewal_Price_Fixing_v2__c.InlineHelpText}"><apex:image styleClass="imgs" url="{!$Resource.questionmark}" width="15" height="15"/></a> </apex:inputCheckbox>
+          
+            
+            <apex:outputPanel id="panel1outer" styleClass="panel">
+              <apex:outputPanel styleClass="panel" id="panel1" rendered="{!sbqq[0].Renewal_Price_Fixing_v2__c}" > 
+              <table class="detailList" align="left" style="width:310%">  
+                <tr>
+                <td></td>
+                <td ><apex:pageMessages id="msgs"></apex:pageMessages></td>
+                </tr>
+                <tr>
+                  <td class="labelCol" ><apex:outputLabel styleClass="check1" value="Committed Years on Order Form"/></td>
+                  <td class="dataCol" ><div ><div class="requiredInput"><div ></div><apex:outputtext styleClass="input" value="{!sbqq[0].Committed_Years_on_Order_Form__c}"  ></apex:outputtext></div></div></td>
+                </tr>
+                <tr> 
+                  <td class="labelCol" ><apex:outputLabel styleClass="check1" value="Capped Years (max: 4)"/></td>
+                  <td class="dataCol" ><div ><div class="requiredInput"><div ></div><apex:outputtext styleClass="input" value="{!sbqq[0].Number_of_Years2__c}"  ></apex:outputtext></div></div></td>
+                </tr>
+                <tr>
+                  <td class="labelCol"><apex:outputLabel styleClass="check1" value="Last Annual Committed Payment"/></td>
+                  <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputtext styleClass="input" value="{!sbqq[0].Last_Annual_Committed_Payment__c}"  ></apex:outputtext></div></div></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td class="labelCol" style="text-align: left"><apex:outputLabel styleClass="check1" style="margin-left:30px;" value="Amount ($)"/><apex:outputLabel styleClass="check1" style="margin-left:150px;" value="Uplift %"/></td>
+     
+                </tr>
+                 <tr>
+                <td class="labelCol"><apex:outputLabel styleClass="check" value="Year {!sbqq[0].Committed_Years_on_Order_Form__c+1} Renewal Cap"  rendered="{! If(sbqq[0].Number_of_Years2__c >0 ,true,false) }"/> </td>
+                <td  class="dataCol"><apex:outputText styleClass="input" value="{0, number, ###,###,###,##0.00}" rendered="{! If(sbqq[0].Number_of_Years2__c >0 ,true,false) }"><apex:param value="{!sbqq[0].Renewal_Year_1_Price__c}" /></apex:outputText> <div  style="margin-left: 200px; margin-top: -13px;"><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Renewal_Year_1_Uplift__c}"  rendered="{! If(sbqq[0].Number_of_Years2__c >0 ,true,false) }" ></apex:outputField></div></div></td>
+                <td class="dataCol"></td>
+                </tr>
+                <tr>
+                <td class="labelCol"><apex:outputLabel styleClass="check" value="Year {!sbqq[0].Committed_Years_on_Order_Form__c+2} Renewal Cap"  rendered="{! If(sbqq[0].Number_of_Years2__c >1 ,true,false) }"/> </td>
+                <td  class="dataCol"><apex:outputText styleClass="input" value="{0, number, ###,###,###,##0.00}" rendered="{! If(sbqq[0].Number_of_Years2__c >1 ,true,false) }"><apex:param value="{!sbqq[0].Renewal_Year_2_Price__c}" /></apex:outputText> <div  style="margin-left:200px; margin-top: -13px;"><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Renewal_Year_2_Uplift__c}"  rendered="{! If(sbqq[0].Number_of_Years2__c >1 ,true,false) }" ></apex:outputField></div></div></td>
+                
+                </tr>
+                <tr>
+                <td class="labelCol"><apex:outputLabel styleClass="check" value="Year {!sbqq[0].Committed_Years_on_Order_Form__c+3} Renewal Cap"  rendered="{! If(sbqq[0].Number_of_Years2__c >2 ,true,false) }"/> </td>
+                <td  class="dataCol"><apex:outputText styleClass="input" value="{0, number, ###,###,###,##0.00}" rendered="{! If(sbqq[0].Number_of_Years2__c >2 ,true,false) }"><apex:param value="{!sbqq[0].Renewal_Year_3_Price__c}" /></apex:outputText> <div  style="margin-left:200px; margin-top: -13px;"><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Renewal_Year_3_Uplift__c}"  rendered="{! If(sbqq[0].Number_of_Years2__c >2 ,true,false) }" ></apex:outputField></div></div></td>
+                
+                </tr>
+                <tr>
+                <td class="labelCol"><apex:outputLabel styleClass="check" value="Year {!sbqq[0].Committed_Years_on_Order_Form__c+4} Renewal Cap"  rendered="{! If(sbqq[0].Number_of_Years2__c >3 ,true,false) }"/> </td>
+                <td  class="dataCol"><apex:outputText styleClass="input" value="{0, number, ###,###,###,##0.00}" rendered="{! If(sbqq[0].Number_of_Years2__c >3 ,true,false) }"><apex:param value="{!sbqq[0].Renewal_Year_4_Price__c}" /></apex:outputText> <div  style="margin-left:200px; margin-top: -13px;"><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Renewal_Year_4_Uplift__c}"  rendered="{! If(sbqq[0].Number_of_Years2__c >3 ,true,false) }" ></apex:outputField></div></div></td>
+                
+                </tr>
+              
+              </table>
+            </apex:outputPanel>
+          </apex:outputPanel>
+          </apex:pageBlockSection>
+
+<!--****************************************************************************************************************************************************-->
+          <apex:pageBlockSection columns="1">
+              <apex:inputCheckbox disabled="true"  styleClass="check" value="{!sbqq[0].Future_Price_Commitment_v2__c}"><a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.SBQQ__Quote__c.fields.Future_Price_Commitment_v2__c.InlineHelpText}"><apex:image styleClass="imgs" url="{!$Resource.questionmark}" width="15" height="15"/></a></apex:inputCheckbox>
+            <apex:outputPanel id="panel3outer">
+            <apex:outputPanel id="panel3"  rendered="{!sbqq[0].Future_Price_Commitment_v2__c}">
+              <table class="detailList" align="right">  
+              <tr>
+                <td><div style="width:200px;"/> </td>
+                <td><div style="width:180px;"/> </td>
+                <td ><apex:pageMessages id="msgs"></apex:pageMessages></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                  <td class="labelCol"><apex:outputLabel styleClass="check" value="Pre-Production Cores/vCores"/> </td>
+                  <td class="dataCol"><apex:outputText styleClass="input" value="{!isoCode}{0, number, ###,###,##0.00}" rendered="{!sbqq[0].Price_Lock_Pre_Production_Cores__c!=null}">
+                      <apex:param value="{!sbqq[0].Price_Lock_Pre_Production_Cores__c}"/></apex:outputText></td>
+                 </tr>
+                 <tr>
+                    <td><div style="width:200px;"/> </td>
+                  <td class="labelCol"><apex:outputLabel styleClass="check" value="Production Cores/vCores"/> </td>
+                  <td class="dataCol"><apex:outputText styleClass="input" value="{!isoCode}{0, number, ###,###,##0.00}" rendered="{!sbqq[0].Price_Lock_Production_Cores__c!=null}">
+                      <apex:param value="{!sbqq[0].Price_Lock_Production_Cores__c}"/></apex:outputText></td>
+                 </tr>
+                 <tr>      
+                    <td><div style="width:200px;"/> </td>       
+                  <td class="labelCol"><apex:outputLabel styleClass="check" value="API Manager"/> </td>     
+                  <td class="dataCol"><apex:outputText styleClass="input" value="{!isoCode}{0, number, ###,###,##0.00}" rendered="{!sbqq[0].Price_Lock_API_Manager__c !=null}">     
+                      <apex:param value="{!sbqq[0].Price_Lock_API_Manager__c }"/></apex:outputText></td>        
+                 </tr>
+                 <tr>
+                    <td><div style="width:200px;"/> </td>
+                 <td class="labelCol"><apex:outputLabel styleClass="check" value="Expiration Date"/></td>
+                  <td class="dataCol"><apex:outputtext styleClass="input" value="{!priceLockExpirationDate}" ></apex:outputtext></td>
+                </tr>
+              </table>
+            </apex:outputPanel>
+          </apex:outputPanel>
+      </apex:pageBlockSection>
+<!--****************************************************************************************************************************************************-->
+
+      <apex:pageBlockSection columns="1">
+               <apex:inputCheckbox disabled="true"  styleClass="check" value="{!sbqq[0].Upgrade_Credit_Terms_v2__c}"><a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.SBQQ__Quote__c.fields.Upgrade_Credit_Terms_v2__c.InlineHelpText}"><apex:image styleClass="imgs" url="{!$Resource.questionmark}" width="15" height="15"/></a></apex:inputCheckbox>
+        
+           <apex:outputPanel id="panel4outer">
+            <apex:outputPanel id="panel4" rendered="{!sbqq[0].Upgrade_Credit_Terms_v2__c}">
+             <table class="detailList" align="right">  
+             <tr>
+                <td><div style="width:200px;"/> </td>
+                <td><div style="width:180px;"/> </td>
+                <td ><apex:pageMessages id="msgs"></apex:pageMessages></td>
+                </tr>
+              <tr>
+                  <td><div style="width:200px;"/> </td>
+                 <td class="labelCol"><apex:outputLabel styleClass="check" value="Credit Amount"/></td>
+                <td class="dataCol"><apex:outputText styleClass="input" value="{!isoCode}{0, number, ###,###,##0.00}"> 
+                      <apex:param value="{!sbqq[0].Credit_Amount__c}"/></apex:outputText></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                 <td class="labelCol"><apex:outputLabel styleClass="check" value="Previous Order Number"/></td>
+                <td class="dataCol"><apex:outputtext styleClass="input" value="{!sbqq[0].Previous_Order_Number__c}" ></apex:outputtext></td>
+             </tr>
+                 <tr>
+                    <td><div style="width:200px;"/> </td>
+                 <td class="labelCol"><apex:outputLabel styleClass="check" value="Show Credit Amount in OF"/></td>
+                <td class="dataCol"><apex:inputCheckbox disabled="true" styleClass="check" value="{!sbqq[0].Show_Credit__c}"></apex:inputCheckbox></td>
+             </tr>
+               <tr>
+                    <td><div style="width:200px;"/> </td>
+                 <td class="labelCol"><apex:outputLabel styleClass="check" value="Multi Year Payments (Credit Yr 1)"/></td>
+                <td class="dataCol"><apex:inputCheckbox disabled="true" styleClass="check" value="{!sbqq[0].If_credit_is_this_MY__c}"></apex:inputCheckbox></td>
+             </tr>
+             </table>
+           </apex:outputPanel>
+         </apex:outputPanel>
+        </apex:pageBlockSection>
+<!--****************************************************************************************************************************************************-->
+           <apex:pageBlockSection columns="1">
+             <apex:inputCheckbox disabled="true"  styleClass="check" value="{!sbqq[0].Multi_Year_Annual_Pay_v2__c}" >
+             <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.SBQQ__Quote__c.fields.Multi_Year_Annual_Pay_v2__c.InlineHelpText}"><apex:image styleClass="imgs" url="{!$Resource.questionmark}" width="15" height="15"/></a></apex:inputCheckbox>
+            
+            <apex:outputPanel id="panel2outer">
+             <apex:outputPanel id="panel2"  rendered="{!sbqq[0].Multi_Year_Annual_Pay_v2__c}">
+              <table class="detailList" align="right">
+                     <tr>
+                         <td><div style="width:200px;"/> </td>
+                         <td><div style="width:180px;"/> </td>
+                         <td ><apex:pageMessages id="msgs"></apex:pageMessages></td>
+                     </tr>  
+                     <tr>
+                         <td><div style="width:250px;"/> </td>
+                         <td class="labelCol"><apex:outputLabel styleClass="check" value="Number of Years"/> </td>
+                         <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Number_of_Years__c}"  ></apex:outputField></div></div></td>
+                     </tr>
+                     <tr>
+                         <td><div style="width:250px;"/> </td>
+                         <td></td>
+                         <td class="labelCol" style="text-align: left"><apex:outputLabel styleClass="check1" style="margin-left:30px;" value="Amount ($)"/><apex:outputLabel styleClass="check1" style="margin-left:150px;" value="Uplift %"/></td>
+                     </tr>
+                     <tr>
+                         <td><div style="width:200px;"/> </td>
+                         <td class="labelCol"><apex:outputLabel styleClass="check" value="Initial Fee"/></td>
+                         <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Amount_Payable_on_Execution__c}"  ></apex:outputField></div></div></td>
+                     </tr>
+                     <tr>
+                         <td><div style="width:200px;"/> </td>
+                         <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Annual Fee 1"  rendered="{! If(sbqq[0].Number_of_Years__c >1 ,true,false) }"/> </td>
+                         <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_1__c}"  rendered="{! If(sbqq[0].Number_of_Years__c >1 ,true,false) }" ></apex:outputField></div></div>
+                         <div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Uplift_Pct_1__c}"  rendered="{! If(sbqq[0].Number_of_Years__c >1 ,true,false) }" ></apex:outputField></div></div>
+                         </td>
+                     </tr>
+                     <tr>
+                         <td><div style="width:200px;"/> </td>
+                         <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Annual Fee 2"  rendered="{! If(sbqq[0].Number_of_Years__c >2 ,true,false) }"/> </td>
+                         <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_2__c}"  rendered="{! If(sbqq[0].Number_of_Years__c >2 ,true,false) }" ></apex:outputField></div></div>
+                         <div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Uplift_Pct_2__c}"  rendered="{! If(sbqq[0].Number_of_Years__c >2 ,true,false) }" ></apex:outputField></div></div>
+                         </td>
+                     </tr>
+                     <tr>
+                         <td><div style="width:200px;"/> </td>
+                         <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Annual Fee 3"  rendered="{! If(sbqq[0].Number_of_Years__c >3 ,true,false) }"/> </td>
+                         <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_3__c}"  rendered="{! If(sbqq[0].Number_of_Years__c >3 ,true,false) }" ></apex:outputField></div></div>
+                         <div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Uplift_Pct_3__c}"  rendered="{! If(sbqq[0].Number_of_Years__c >3 ,true,false) }" ></apex:outputField></div></div>
+                         </td>
+                     </tr>
+                     <tr>
+                         <td><div style="width:200px;"/> </td>
+                         <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Annual Fee 4"  rendered="{! If(sbqq[0].Number_of_Years__c >4 ,true,false) }"/> </td>
+                         <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_4__c}"  rendered="{! If(sbqq[0].Number_of_Years__c >4 ,true,false) }" ></apex:outputField></div></div>
+                         <div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Uplift_Pct_4__c}"  rendered="{! If(sbqq[0].Number_of_Years__c >4 ,true,false) }" ></apex:outputField></div></div>
+                         </td>
+                     </tr>
+                     <tr>
+                         <td><div style="width:200px;"/> </td>
+                         <td class="labelCol"><apex:outputLabel styleClass="check" value="Total Subscription Amount" /></td>
+                         <td  class="dataCol"><apex:outputText styleClass="input" value="{0, number, ###,###,###,##0.00}"><apex:param value="{!sbqq[0].Total_Subscription_Amount__c}"/></apex:outputText></td>
+                     </tr>
+                     <tr>
+                         <td><div style="width:200px;"/> </td>
+                         <td class="labelCol"><apex:outputLabel styleClass="check" value="Total Subscription Amount with Credit" /></td>
+                         <td  class="dataCol"><apex:outputText styleClass="input" value="{0, number, ###,###,###,##0.00}"><apex:param value="{!sbqq[0].Total_Subscription_Amount_Credit__c}"/></apex:outputText></td>
+                     </tr>
+                     
+                 </table>
+             </apex:outputPanel>
+           </apex:outputPanel>
+          </apex:pageBlockSection>
+          
+ <!--****************************************************************************************************************************************************-->           
+        <apex:pageBlockSection columns="1">
+         
+             
+         <apex:inputCheckbox disabled="true"  styleClass="check" value="{!sbqq[0].Non_Annual_Payments_Schedule__c}" >
+         <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.SBQQ__Quote__c.fields.Non_Annual_Payments_Schedule__c.InlineHelpText}"><apex:image styleClass="imgs" url="{!$Resource.questionmark}" width="15" height="15"/></a></apex:inputCheckbox>
+
+         <apex:outputPanel id="panel3outer">
+             <apex:outputPanel id="panel2"  rendered="{!sbqq[0].Non_Annual_Payments_Schedule__c}">
+              <table class="detailList" align="right">
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td><div style="width:180px;"/> </td>
+                    <td ><apex:pageMessages id="msgs"></apex:pageMessages></td>
+                </tr> 
+                <tr>
+                    <td><div style="width:250px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Number of Payments"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Number_of_Payments__c}"  ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:250px;"/> </td>
+                    <td></td>
+                    <td class="labelCol" style="text-align: left"><apex:outputLabel styleClass="check1" style="margin-left:30px;" value="Amount ($)"/><apex:outputLabel styleClass="check1" style="margin-left:150px;" value="Date"/></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Initial Fee"/></td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Amount_Payable_on_Execution__c}"  ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 1"  rendered="{! If(sbqq[0].Number_of_Payments__c >1 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_1__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >1 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_1__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >1 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 2"  rendered="{! If(sbqq[0].Number_of_Payments__c >2 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_2__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >2 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_2__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >2 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 3"  rendered="{! If(sbqq[0].Number_of_Payments__c >3 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_3__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >3 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_3__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >3 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 4"  rendered="{! If(sbqq[0].Number_of_Payments__c >4 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_4__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >4 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_4__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >4 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 5"  rendered="{! If(sbqq[0].Number_of_Payments__c >5 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_5__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >5 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_5__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >5 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 6"  rendered="{! If(sbqq[0].Number_of_Payments__c >6 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_6__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >6 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_6__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >6 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 7"  rendered="{! If(sbqq[0].Number_of_Payments__c >7 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_7__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >7 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_7__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >7 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 8"  rendered="{! If(sbqq[0].Number_of_Payments__c >8 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_8__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >8 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_8__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >8 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 9"  rendered="{! If(sbqq[0].Number_of_Payments__c >9 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_9__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >9 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_9__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >9 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 10"  rendered="{! If(sbqq[0].Number_of_Payments__c >10 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_10__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >10 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_10__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >10 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 11"  rendered="{! If(sbqq[0].Number_of_Payments__c >11 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_11__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >11 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_11__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >11 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 12"  rendered="{! If(sbqq[0].Number_of_Payments__c >12 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_12__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >12 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_12__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >12 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 13"  rendered="{! If(sbqq[0].Number_of_Payments__c >13 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_13__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >13 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_13__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >13 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 14"  rendered="{! If(sbqq[0].Number_of_Payments__c >14 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_14__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >14 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_14__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >14 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 15"  rendered="{! If(sbqq[0].Number_of_Payments__c >15 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_15__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >15 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_15__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >15 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 16"  rendered="{! If(sbqq[0].Number_of_Payments__c >16 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_16__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >16 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_16__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >16 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 17"  rendered="{! If(sbqq[0].Number_of_Payments__c >17 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_17__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >17 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_17__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >17 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 18"  rendered="{! If(sbqq[0].Number_of_Payments__c >18 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_18__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >18 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_18__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >18 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Subsequent Fee 19"  rendered="{! If(sbqq[0].Number_of_Payments__c >19 ,true,false) }"/> </td>
+                    <td class="dataCol"><div ><div class="requiredInput"><div ></div><apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_19__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >19 ,true,false) }" ></apex:outputField></div></div><div  style="margin-left: 220px;margin-top: -13px;"><div class="requiredInput"><div ></div>
+                        <apex:outputField styleClass="input" value="{!sbqq[0].Subsequent_Amount_Date_19__c}"  rendered="{! If(sbqq[0].Number_of_Payments__c >19 ,true,false) }" ></apex:outputField></div></div></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Total Subscription Amount" /></td>
+                    <td  class="dataCol"><apex:outputText styleClass="input" value="{0, number, ###,###,###,##0.00}"><apex:param value="{!sbqq[0].Total_Subscription_Amount__c}"/></apex:outputText></td>
+                </tr>
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                    <td class="labelCol"><apex:outputLabel styleClass="check" value="Total Subscription Amount with Credit" /></td>
+                    <td  class="dataCol"><apex:outputText styleClass="input" value="{0, number, ###,###,###,##0.00}"><apex:param value="{!sbqq[0].Total_Subscription_Amount_Credit__c}" /></apex:outputText></td>
+                </tr>
+                
+               </table>
+             </apex:outputPanel>
+           </apex:outputPanel>         
+         
+         </apex:pageBlockSection>    
+ <!--****************************************************************************************************************************************************-->           
+         <apex:pageBlockSection columns="1">
+            <apex:inputCheckbox disabled="true"  styleClass="check" value="{!sbqq[0].Multi_Year_Paid_Up_Front_v2__c}" ><a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.SBQQ__Quote__c.fields.Multi_Year_Paid_Up_Front_v2__c.InlineHelpText}"><apex:image styleClass="imgs" url="{!$Resource.questionmark}" width="15" height="15"/></a></apex:inputCheckbox>
+            <apex:outputPanel id="panel5outer">
+            <apex:outputPanel id="panel5" rendered="{!sbqq[0].Multi_Year_Paid_Up_Front_v2__c}">
+             <table class="detailList" align="right"> 
+             <tr>
+                <td><div style="width:200px;"/> </td>
+                <td><div style="width:180px;"/> </td>
+                <td ><apex:pageMessages id="msgs"></apex:pageMessages></td>
+                </tr>
+              <tr>
+                  <td><div style="width:200px;"/> </td>
+                <td class="labelCol"><apex:outputLabel styleClass="check" value="Number of Years"/>&nbsp; &nbsp; </td>
+                <td class="dataCol"><apex:outputText styleClass="input" value="{!years}" 
+                ></apex:outputText></td>
+              </tr>
+              <tr>
+                  <td><div style="width:200px;"/> </td>
+                <td class="labelCol"><apex:outputLabel styleClass="check" value="Amount Payable On Execution"/>&nbsp; &nbsp; </td>
+                <td class="dataCol"><apex:outputText styleClass="input" value="{!isoCode}{0, number, ###,###,##0.00}"> 
+                      <apex:param value="{!myear1price}"/></apex:outputText></td>
+             </tr>
+             </table>
+           </apex:outputPanel>
+         </apex:outputPanel>
+          </apex:pageBlockSection>
+
+            <!--****************************************************************************************************************************************************-->
+         <apex:pageBlockSection columns="1">
+             <apex:inputCheckbox disabled="true"  styleClass="check" value="{!sbqq[0].Marketing_Material_Clarification_v2__c}" >
+             <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.SBQQ__Quote__c.fields.Marketing_Material_Clarification_v2__c.InlineHelpText}"><apex:image styleClass="imgs" url="{!$Resource.questionmark}" width="15" height="15"/></a></apex:inputCheckbox>
+            
+           <apex:outputPanel id="panel6outer">
+            <apex:outputPanel id="panel6" rendered="{!sbqq[0].Marketing_Material_Clarification_v2__c}">
+             <table  class="detailList" align="right"> 
+             <tr>
+                <td><div style="width:200px;"/> </td>
+                <td><div style="width:180px;"/> </td>
+                <td ><apex:pageMessages id="msgs"></apex:pageMessages></td>
+                </tr>
+              
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                 <td class="labelCol"><apex:outputLabel styleClass="check" value="Type"/>&nbsp; &nbsp; </td>
+                 <td class="dataCol"><apex:outputtext styleClass="input" 
+
+                  value="{!sbqq[0].Marketing_Material_Type__c}" ></apex:outputtext></td>
+              </tr>
+               
+                <tr>
+                    <td><div style="width:200px;"/> </td>
+                 <td class="labelCol"><apex:outputLabel styleClass="check" value="Deadline"/>&nbsp; &nbsp; </td>
+                 <td class="dataCol"><apex:outputtext styleClass="input" 
+
+                  value="{!sbqq[0].Marketing_Material_Deadline__c}" ></apex:outputtext></td>
+              </tr>
+             </table>
+           </apex:outputPanel>
+         </apex:outputPanel>
+        </apex:pageBlockSection>
+
+          <!-- <apex:pageBlockSection columns="1">
+             <apex:inputCheckbox disabled="true"   styleClass="check" value="{!sbqq[0].Clustering_Entitlement_Clarification_v2__c}" ><a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.SBQQ__Quote__c.fields.Clustering_Entitlement_Clarification_v2__c.InlineHelpText}"><apex:image styleClass="imgs" url="{!$Resource.questionmark}" width="15" height="15"/></a></apex:inputCheckbox >
+            
+           <apex:outputPanel id="panel7outer">
+            <apex:outputPanel id="panel7" rendered="{!sbqq[0].Clustering_Entitlement_Clarification_v2__c}">
+             <table  class="detailList" align="right">
+             <tr>
+                <td><div style="width:200px;"/> </td>
+                <td><div style="width:180px;"/> </td>
+                <td ><apex:pageMessages id="msgs"></apex:pageMessages></td>
+                </tr>  
+              <tr>
+              <td><div style="width:200px;"/> </td>
+                <td class="labelCol"><apex:outputLabel styleClass="check" value=""/>&nbsp; &nbsp; </td>
+               <!-- <td class="dataCol"></div><apex:outputtext styleClass="input" value="{!sbqq[0].Marketing_Material_Type__c}" ></apex:outputtext></div></div></td>
+                </tr>
+                <tr>
+                <td><div style="width:200px;"/> </td>
+                 <td class="labelCol"><apex:outputLabel styleClass="check" value=""/>&nbsp; &nbsp; </td>
+                 <!--<td class="dataCol"></div><apex:outputtext styleClass="input" value="{!sbqq[0].Marketing_Material_Deadline__c}"></apex:outputtext></div></div></td>
+             </table>
+           </apex:outputPanel>
+         </apex:outputPanel>
+        </apex:pageBlockSection>--> 
+
+       </apex:pageBlockSection>  
+      </apex:pageblock>
+  </apex:form>
+</body>
+</apex:page>

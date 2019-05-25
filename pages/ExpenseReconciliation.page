@@ -1,0 +1,217 @@
+<apex:page controller="ExpenseReconciliationController" sidebar="false">
+
+
+<apex:form >
+
+
+
+<apex:pageBlock id="pageBlock">
+
+<apex:pageBlockButtons >
+<apex:commandButton value="Save Changes" action="{!saveChanges}"/>
+</apex:pageBlockButtons>
+<apex:pageMessages ></apex:pageMessages>
+<div align="right" style="display:{!IF(NOT(ISNULL(expenses)),'block','none')}">
+<font size="1pt">Page #&nbsp;<apex:outputLabel value="{!PageNumber}"/>&nbsp;out of&nbsp;<apex:outputLabel value="{!totalPageNumber}"/>&nbsp;&nbsp;&nbsp;&nbsp;</font>
+
+
+<apex:commandButton value="Previous" action="{!previousBtnClick}" disabled="{!previousButtonEnabled}" reRender="pageBlock"></apex:commandButton>
+<apex:commandButton value="Next" action="{!nextBtnClick}" reRender="pageBlock" disabled="{!nextButtonDisabled}" ></apex:commandButton>
+</div>
+
+
+
+<apex:dataTable value="{!exp1}" var="e" id="table">
+
+<apex:column >
+
+<apex:facet name="header">
+                        <apex:commandLink value="Expense Record" action="{!doSort}"   rerender="table">
+                            <apex:param name="sortField" value="Name" assignTo="{!sortField}"/>
+                        </apex:commandLink>
+                    </apex:facet>
+
+<a href="/{!e.expenseLog.id}">{!e.expenseLog.name}</a>
+
+</apex:column>
+
+<apex:column >
+<div style="width:20px"></div>
+</apex:column>
+
+<apex:column >
+
+<apex:facet name="header">
+                        <apex:commandLink value="Check #" action="{!doSort}"   rerender="table">
+                            <apex:param name="sortField" value="Check_Number__c" assignTo="{!sortField}"/>
+                        </apex:commandLink>
+                    </apex:facet>
+
+<apex:inputField value="{!e.expenseLog.Check_Number__c}" style="width:50px"/>
+
+</apex:column>
+
+<apex:column >
+<div style="width:20px"></div>
+</apex:column>
+
+<apex:column >
+
+<apex:facet name="header">
+                        <apex:commandLink value="Date" action="{!doSort}"   rerender="table">
+                            <apex:param name="sortField" value="Date__c" assignTo="{!sortField}"/>
+                        </apex:commandLink>
+                    </apex:facet>
+
+<apex:outputField value="{!e.expenseLog.Date__c}" style="width:50px"/>
+
+</apex:column>
+
+<apex:column >
+<div style="width:20px"></div>
+</apex:column>
+
+<apex:column >
+
+<apex:facet name="header">
+                        <apex:commandLink value="Project" action="{!doSort}"   rerender="table">
+                            <apex:param name="sortField" value="Project__c" assignTo="{!sortField}"/>
+                        </apex:commandLink>
+                    </apex:facet>
+
+<apex:outputField value="{!e.expenseLog.Project__c}" style="width:50px"/>
+
+</apex:column>
+
+<apex:column >
+<div style="width:20px"></div>
+</apex:column>
+
+<apex:column >
+
+<apex:facet name="header">
+                        <apex:commandLink value="Vend Inv" action="{!doSort}"   rerender="table">
+                            <apex:param name="sortField" value="Vendor_Invoice_Number__c" assignTo="{!sortField}"/>
+                        </apex:commandLink>
+                    </apex:facet>
+
+<apex:outputField value="{!e.expenseLog.Vendor_Invoice_Number__c}" style="width:50px"/>
+
+</apex:column>
+
+
+
+
+<apex:column >
+<div style="width:20px"></div>
+</apex:column>
+
+<apex:column >
+
+<apex:facet name="header">
+                        <apex:commandLink value="Vendor" action="{!doSort}"   rerender="table">
+                            <apex:param name="sortField" value="Vendor_Sort__c" assignTo="{!sortField}"/>
+                        </apex:commandLink>
+                    </apex:facet>
+
+<apex:selectList value="{!e.expenseLog.Selected_Vendor__c}"  size="1" required="true" >
+                 <apex:selectOption itemValue="--None---" itemLabel="--None--"/>
+                    <apex:selectOptions value="{!VendorList}"/>
+                </apex:selectList> 
+                
+                </apex:column> 
+
+<apex:column >
+<div style="width:20px"></div>
+</apex:column>
+
+
+<apex:column >
+
+<apex:facet name="header">
+                        <apex:commandLink value="Exp Amt" action="{!doSort}"   rerender="table">
+                            <apex:param name="sortField" value="Amount__c" assignTo="{!sortField}"/>
+                        </apex:commandLink>
+                    </apex:facet>
+
+
+
+  <apex:outputText rendered="true" value="{0,number,$,##0.00}">
+                                <apex:param value="{!e.expenseLog.Amount__c}" />
+                                </apex:outputText>
+
+</apex:column>
+
+<apex:column >
+<div style="width:20px"></div>
+</apex:column>
+
+
+<apex:column headerValue="Inv Amt">
+
+ <apex:outputText rendered="true" value="{0,number,$,##0.00}">
+                                <apex:param value="{!e.invoiceExpense.Amount__c}" />
+                                </apex:outputText>
+
+
+</apex:column>
+
+<apex:column >
+<div style="width:20px"></div>
+</apex:column>
+
+
+<apex:column headerValue="Markup">
+
+<apex:outputField value="{!e.invoiceExpense.Actual_Markup_Percent__c}"/>
+
+</apex:column>
+
+<apex:column >
+<div style="width:20px"></div>
+</apex:column>
+
+<apex:column >
+
+<apex:facet name="header">
+                        <apex:commandLink value="Is Invoiced" action="{!doSort}"   rerender="table">
+                            <apex:param name="sortField" value="Is_Finalized__c" assignTo="{!sortField}"/>
+                        </apex:commandLink>
+                    </apex:facet>
+
+
+<apex:outputField value="{!e.invoiceExpense.invoice__r.Is_Finalized__c}"/>
+<br/><br/>
+
+</apex:column>
+
+<apex:column >
+<div style="width:20px"></div>
+</apex:column>
+
+<apex:column headerValue="Invoice Expense Record">
+
+<a href="/{!e.invoiceExpense.id}"><apex:outputField value="{!e.invoiceExpense.name}"/></a>
+<br/><br/>
+
+</apex:column>
+
+
+
+
+
+
+</apex:dataTable>
+<div align="right" style="display:{!IF(NOT(ISNULL(expenses)),'block','none')}">
+<br/>
+<font size="1pt">Page #&nbsp;<apex:outputLabel value="{!PageNumber}"/>&nbsp;out of&nbsp;<apex:outputLabel value="{!totalPageNumber}"/>&nbsp;&nbsp;&nbsp;&nbsp;</font>
+<apex:commandButton value="Previous" action="{!previousBtnClick}" disabled="{!previousButtonEnabled}" reRender="pageBlock"></apex:commandButton>
+<apex:commandButton value="Next" action="{!nextBtnClick}" reRender="pageBlock" disabled="{!nextButtonDisabled}" ></apex:commandButton>
+</div>
+</apex:pageBlock>
+
+</apex:form>
+
+
+
+</apex:page>

@@ -1,0 +1,163 @@
+<apex:component ><div id="search" class="CoveoSearchInterface" data-enable-history="true" data-results-per-page="8" data-excerpt-length="400" data-responsive-medium-breakpoint="" data-responsive-small-breakpoint="" data-maximum-age="" data-pipeline="Support Center Pipeline" data-enable-debug-info="false">
+  <div class="coveo-hide-after-query" style="text-align:center;font-weight:bolder;font-size:18px;margin-top:100px;">Type to search</div>
+  <div class="CoveoFolding" data-tab-not="SalesforceChatter" data-range="10"></div>
+  <div class="CoveoAnalytics" data-search-hub="Support-Center"></div>
+  <div class="MuleSupportTabSection">
+    <a class="CoveoTab MuleSupportTab" data-id="AllResults" data-caption="All Items" data-pipeline="Support Center Pipeline"></a>
+    <a class="CoveoTab MuleSupportTab" data-id="SalesforceArticle" data-caption="Articles" data-pipeline="Support Center Pipeline" data-maximum-age="" data-expression="@source=SFKnowledge"></a>
+    <a class="CoveoTab MuleSupportTab" data-id="MuleSoftDocumentation" data-caption="Documentation" data-pipeline="Support Center Pipeline" data-maximum-age="" data-expression="@documentType=Webpage"></a>
+  </div>
+  <div class="coveo-search-section">
+    <div class="CoveoCommunityStateManager"></div>
+  </div>
+  <div class="coveo-main-section MuleSupportMainSection">
+    <div class="coveo-results-column MuleSupportResults">
+      <div class="CoveoTriggers"></div>
+      <div class="CoveoBreadcrumb"></div>
+      <div class="CoveoDidYouMean"></div>
+      <div class="coveo-results-header">
+        <div class="coveo-summary-section">
+          <span class="CoveoQuerySummary"><div class="coveo-show-if-no-results"></div></span>
+        </div>
+        <div class="coveo-result-layout-section">
+          <span class="CoveoResultLayout"></span>
+        </div>
+      </div>
+      <div class="CoveoHiddenQuery"></div>
+      <div class="CoveoErrorReport" data-pop-up="false"></div>
+      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true">
+        <script type="text/html" data-field-objecttype="announcement" class="result-template" id="AnnouncementLayout"><div class="coveo-result-frame">
+  <div class="coveo-result-cell" style="vertical-align:top;text-align:center;width:32px;">
+    <span class="CoveoIcon" data-small="true" data-with-label="false"></span>
+  </div>
+  <div class="coveo-result-cell" style="vertical-align: top;padding-left: 16px;">
+    <div class="coveo-result-row" style="margin-top:0;">
+      <div class="coveo-result-cell" style="vertical-align:top;font-size:16px;"><span class="CoveoSalesforceResultLink"></span></div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+      <div class="coveo-result-cell">
+        <span class="CoveoExcerpt"></span>
+      </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+    </div>
+  </div>
+</div></script>
+        <script type="text/html" data-field-objecttype="root_cause_analysis" class="result-template" id="RCALayout"><div class="coveo-result-frame">
+  <div class="coveo-result-cell" style="vertical-align:top;text-align:center;width:32px;">
+    <span class="CoveoIcon" data-small="true" data-with-label="false"></span>
+  </div>
+  <div class="coveo-result-cell" style="vertical-align: top;padding-left: 16px;">
+    <div class="coveo-result-row" style="margin-top:0;">
+      <div class="coveo-result-cell" style="vertical-align:top;font-size:16px;"><span class="CoveoSalesforceResultLink"></span></div>
+      <div class="coveo-result-cell" style="width:120px;text-align:right;font-size:12px">
+        <div class="coveo-result-row">
+          <span class="CoveoFieldValue" data-field="@date" data-helper="date"></span>
+        </div>
+      </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+      <div class="coveo-result-cell">
+        <span class="CoveoExcerpt"></span>
+      </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+    </div>
+  </div>
+</div></script>
+        <script id="KBLayout" class="result-template" type="text/html" data-field-objecttype="Knowledge"><div class="coveo-result-frame" style="padding:0 16px 16px 0;">
+    <div class="coveo-result-cell"><span class="CoveoIcon" data-small="true" data-with-label="false"></span></div>
+    <div class="coveo-result-cell" style="vertical-align: top;padding-left: 16px;"><div class="coveo-result-row" style="margin-top:0;">
+            <div class="coveo-result-cell" style="vertical-align:top; font-size:16px"><a class="CoveoSalesforceResultLink" data-title-template="${raw.sftitle}"></a></div>
+        </div><div class="coveo-result-row" style="margin-top:12px;">
+            <div class="coveo-result-cell"><span class="CoveoExcerpt"></span></div>
+        </div><div class="coveo-result-row" style="margin-top:8px;">
+        </div><div class="coveo-result-row" style="margin-top:8px;">           
+        </div></div>
+</div>
+</script>
+        <script type="text/html" data-field-documenttype="webpage" class="result-template" id="Documentation"><div class="coveo-result-frame">
+  <div class="coveo-result-cell" style="vertical-align:top;text-align:center;width:32px;"><span class="CoveoIcon" data-small="true" data-with-label="false"></span></div>
+  <div class="coveo-result-cell" style="vertical-align:top; padding-left:14px">
+    <div class="coveo-result-row" style="margin-top:0;">
+      <div class="coveo-result-cell" style="vertical-align:top;font-size:16px;">
+        <a class="CoveoResultLink" data-always-open-in-new-window="true"></a>
+      </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+      <div class="coveo-result-cell">
+        <span class="CoveoExcerpt"></span>
+      </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+    </div>
+  </div>
+</div></script>
+        <script type="text/html" data-field-objecttype="casecomment" class="result-template" id="CaseCommentLayout"><div class="coveo-result-frame">
+  <div class="coveo-result-cell" style="width:32px; text-align:center; vertical-align:top"><span class="CoveoIcon" data-small="true" data-with-label="false"></span></div><div class="coveo-result-cell" style="vertical-align: top;padding-left: 16px;">
+    <div class="coveo-result-row" style="margin-top:0;">
+      <div class="coveo-result-cell" style="vertical-align:top;font-size:16px;"><a class="CoveoResultLink" data-href-template="https://${window.location.hostname}/s/case/${raw.sfcaseid}"></a></div>
+      <div class="coveo-result-cell" style="width:120px;text-align:right;font-size:12px">
+        <div class="coveo-result-row">
+          <span class="CoveoFieldValue" data-field="@date" data-helper="date"></span>
+        </div>
+      </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+      <div class="coveo-result-cell">
+        <span class="CoveoExcerpt"></span>
+      </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+      <div class="coveo-result-cell">
+        <span class="CoveoFieldValue" data-field="@sfownername" data-text-caption="Owner" style="margin-right:30px;"></span>
+        <span class="CoveoFieldValue" data-field="@sfaccountname" data-text-caption="Account" style="margin-right:30px;"></span>
+      </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+    </div>
+  </div>
+</div></script>
+        <script type="text/html" data-field-objecttype="case" class="result-template" id="CaseLayout"><div class="coveo-result-frame">
+  <div class="coveo-result-cell" style="vertical-align:top;text-align:center;width:32px;">
+    <span class="CoveoIcon" data-small="true" data-with-label="false"></span>
+  </div>
+  <div class="coveo-result-cell" style="vertical-align: top;padding-left: 16px;">
+    <div class="coveo-result-row" style="margin-top:0;">
+      <div class="coveo-result-cell" style="vertical-align:top;font-size:16px;"><a class="CoveoResultLink" data-title-template="${sftitle} - ${raw.sfcasenumber}" data-href-template="https://${window.location.hostname}/s/case/${raw.sfcaseid}"></a></div>
+      <div class="coveo-result-cell" style="width:120px;text-align:right;font-size:12px">
+        <div class="coveo-result-row">
+          <span class="CoveoFieldValue" data-field="@date" data-helper="date"></span>
+        </div>
+      </div>
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+      <div class="coveo-result-cell">
+        <span class="CoveoExcerpt"></span>
+      </div>
+    </div><div class="coveo-result-row"></div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+      <div class="coveo-result-cell"><span class="CoveoFieldValue" data-field="@sfpriority" data-text-caption="Priority" style="margin-right:30px;"></span><span class="CoveoFieldValue" data-field="@sfstatus" data-text-caption="Status" style="margin-right:30px;"></span><span class="CoveoFieldValue" data-field="@sfcontactname" data-text-caption="Reporter"></span></div>
+    </div><div class="coveo-result-row"></div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+    </div>
+    <div class="coveo-result-row" style="margin-top:10px;">
+      </div>
+  </div>
+</div></script>
+      </div>
+      <div class="CoveoPager"></div>
+    </div>
+    <div class="coveo-facet-column MuleSupportFacetCol" style="width:250x">
+      <div class="CoveoFacet MuleSupportFacet" data-title="Product" data-field="@sfdcproduct" data-number-of-values="" data-tab="SalesforceArticle"></div>
+      <div class="CoveoFacet MuleSupportFacet" data-title="Product" data-field="@product" data-number-of-values="" data-tab="MuleSoftDocumentation"></div>
+      <div class="CoveoFacet MuleSupportFacet" data-title="Version" data-field="@version" data-tab="MuleSoftDocumentation" data-sort-criteria="alphaDescending" data-injection-depth="" data-number-of-values-in-breadcrumb="" data-page-size="" data-depends-on="@product"></div>
+    </div>
+  </div>
+</div></apex:component>

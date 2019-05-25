@@ -1,0 +1,20 @@
+<apex:component access="global">
+ <apex:attribute name="Allowed" type="Boolean" description=""/>
+ <apex:attribute name="userName" type="String" description=""/>
+<span style="font-family:verdana;font-size:12px">  
+<p>Welcome to the {!$Network.Name}!</p>
+<p>Your {!$Network.Name} username is below.<br/>
+Username: {!userName}<br/></p>
+ 
+<p>Please use this information to login to the {!$Network.Name} here: <br/>
+{!$Network.NetworkUrlForUserEmails}</p>
+
+<p>We are looking forward to working with you!</p>
+
+<p>Cheers,<br/>
+MuleSoft Support</p>
+<!--<img src="https://na29.salesforce.com/servlet/servlet.ImageServer?id=01530000000RRbf&oid=00DQ000000BJd6Z"/>-->
+<!--<apex:image id="theImage" value="{!'/servlet/servlet.FileDownload?file=' &'01530000000RRbf'}" />-->
+<img src="{!LEFT($CurrentPage.URL,FIND('/',$CurrentPage.URL,9)) & 'servlet/servlet.ImageServer?id=01530000000RRbf&oid=00DQ000000BJd6Z'}"/>
+</span>
+</apex:component>

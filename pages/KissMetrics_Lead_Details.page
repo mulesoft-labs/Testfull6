@@ -1,0 +1,3 @@
+<apex:page standardController="Lead">
+  <apex:iframe rendered="{!IF((lead.CommunityNickname__c != ''), true, false)}" src="https://www.kissmetrics.com/people/find/{!lead.CommunityNickname__c}?mode=embedded&key=72f95fe62e8491759a3c96d60896bb692a0de91b&secret=bcec46afd901e64157e90a43b504bbb27c8641d6" width="100%" scrolling="true" height="400px" /> 
+</apex:page>

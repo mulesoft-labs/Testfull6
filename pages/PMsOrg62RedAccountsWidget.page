@@ -1,0 +1,265 @@
+<apex:page standardController="Account" extensions="CMsOrg62RedAccountWidgetOnAccController" sidebar="false">
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"/>
+    <apex:includeScript value="{!URLFOR($Resource.jqueryTablesorter, 'jquery.tablesorter.min.js')}"/>
+    <script type="text/javascript">
+        $j = jQuery.noConflict();
+        $j(document).ready(function () {
+            $j('table thead').addClass('myTableHeader');
+            $j('table tbody').addClass('myTableBody');
+            $j("[id$=theaddrs]").tablesorter();
+
+        });
+    </script>
+    <style>
+        td, th {
+            vertical-align:top !important;
+        }
+
+        .sticky {
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+        .sticky+.content {
+            padding-top: 102px;
+        }
+        
+        .myTableBody {
+
+            height:200px;
+            width:100%;
+        }
+        .myTableHeader {
+            position: relative;
+            display: relative;
+            table-layout: fixed;
+            width: 100% !important;
+            overflow:hidden;
+        }
+
+        table th{
+            width: 100% !important;
+            top: 0;
+            position: sticky;
+        }
+
+    </style>
+    <apex:pageBlock >
+        <apex:outputText rendered="{!(org62RedAccounts.size = 0)}" value="{!$Label.Org62_Red_Account_Error}"/>
+        <apex:outputText style="font-weight:800" rendered="{!(org62RedAccounts.size <> 0)}" value="Total number of Red Account record(s) : "/>
+        <apex:outputText style="font-weight:800" rendered="{!(org62RedAccounts.size <> 0)}" styleClass="header" value="{!org62RedAccounts.size}"/>
+        <br />
+        <apex:PageBlockTable value="{!org62RedAccounts}" var="Org62RedAcc" id="theaddrs" styleClass="tablesorter" headerClass="header" rendered="{!(org62RedAccounts.size != 0)}">
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Account Name"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.Account_Name__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62RedAcc.AccName}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.AccName = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Stage"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.Stage__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62RedAcc.StageName}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.StageName = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Customer Sentiment"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.Red_Trending__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62RedAcc.Red_Trending}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.Red_Trending = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Issue Owner"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.Issue_Owner__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62RedAcc.Issue_Owner}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.Issue_Owner = null)}"/>
+            </apex:column>
+            <apex:column >
+                <div style = "width: 150px">                
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Issue Summary"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.Issue__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                </div>
+                <apex:outputText value="{!Org62RedAcc.Issue}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.Issue = null)}"/>
+            </apex:column>
+            <apex:column >
+                <div style = "width: 150px">                                
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Original Issue"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.Original_Issue__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                </div>
+                <apex:outputText value="{!Org62RedAcc.Original_Issue}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.Original_Issue = null)}"/>
+            </apex:column>
+            <apex:column >
+                <div style = "width: 150px">                
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Action Plan Details"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.Action_Plan__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                </div>
+                <apex:outputText value="{!Org62RedAcc.ActionPlan}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.ActionPlan = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="AOV at Risk Currency"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.Currency__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62RedAcc.CurrencyISO}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.CurrencyISO = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="AOV at Risk"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.ACV_at_Risk__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62RedAcc.ACV_at_Risk}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.ACV_at_Risk = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="CFL Escalation Owner"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.At_Level_3_escalated_to__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62RedAcc.At_Level}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.At_Level = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="CFL Regional SVP"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.CFL_Region_SVP__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62RedAcc.CFL_Region_SVP}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.CFL_Region_SVP = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Escalation Category"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.Escalation_Category__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62RedAcc.Escalation_Category}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.Escalation_Category = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Executive Action Requested"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.Executive_Action_Requested__c .InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62RedAcc.Executive_Action_Requested}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.Executive_Action_Requested = null)}"/>
+            </apex:column>
+            <apex:column >
+                <div style = "width: 150px">                                
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="ECOMM Headline"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.ECOMM_Headline__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                </div>
+                <apex:outputText value="{!Org62RedAcc.ECOMM_Headline}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.ECOMM_Headline = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="CSG Coverage"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="The CSG who is stamped on the related Org62 Acct; CSG stands for “Customer Success Group” and delivers Success Services."/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62RedAcc.CSG_Coverage}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.CSG_Coverage = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="CSG Region"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.Region__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62RedAcc.Region}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.Region = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="CSG SubRegion"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.CFL_Region__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62RedAcc.CFL_Region}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.CFL_Region = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="EOP Sponsor"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.EOP_Sponsor__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62RedAcc.EOP_Sponsor}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.EOP_Sponsor = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="# of Days Red"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Red_Account__x.fields.Days_Red__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62RedAcc.Days_Red}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.Days_Red = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Red Account ID"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="SFDC ID of the Red Account object."/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62RedAcc.AccId}" />
+                <apex:outputText value="N/A" rendered="{!(Org62RedAcc.AccId = null)}"/>
+            </apex:column>            
+            
+        </apex:PageBlockTable>
+    </apex:pageBlock>
+</apex:page>

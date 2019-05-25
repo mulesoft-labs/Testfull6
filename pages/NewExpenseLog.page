@@ -1,0 +1,48 @@
+<apex:page standardController="Expense_Log__c" extensions="NewExpenseLogController">
+
+
+<apex:form >
+<apex:pagemessages />
+<apex:sectionHeader title="Expense Log Edit" subtitle="Expense Time Log"/>
+<apex:pageBlock title="Expense Log Edit">
+<apex:pageBlockButtons >
+<apex:commandButton value="Save" action="{!save}"/><apex:commandButton value="Cancel" action="{!cancel}"/>
+</apex:pageBlockButtons>
+<apex:pageBlockSection title="Information" collapsible="true" columns="1" >
+
+
+
+
+<apex:inputField value="{!log.Date__c}" required="true"/>
+<apex:inputField value="{!log.Amount__c}" required="true"/>
+
+
+<apex:outputPanel >
+<div style="margin-left:150px">
+<b>Vendor</b>
+<span style="margin-left:14px">
+<apex:selectList id="rt" value="{!VendorID}" size="1" required="true">
+                    <apex:selectOption itemValue="" itemLabel=""/>
+                    <apex:selectOptions value="{!VendorList}"/>
+                </apex:selectList>  
+                </span>
+                </div>
+                </apex:outputPanel>       
+
+<apex:inputField value="{!log.Vendor_Invoice_Number__c}" required="false"/>
+</apex:pageBlockSection>
+
+<apex:pageblockSection title="Description" >
+
+<apex:inputField value="{!log.Description__c}" style="width:500px;height:100px" required="true"/>
+
+
+</apex:pageblockSection>
+
+
+
+</apex:pageBlock>
+
+ </apex:form>
+ 
+</apex:page>

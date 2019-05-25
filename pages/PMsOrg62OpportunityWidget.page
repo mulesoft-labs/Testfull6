@@ -1,0 +1,311 @@
+<apex:page standardController="Account" extensions="CMsOrg62OpptyWidgetOnAccController" sidebar="false">
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" />
+    <apex:includeScript value="{!URLFOR($Resource.jqueryTablesorter, 'jquery.tablesorter.min.js')}" />
+    <script type="text/javascript">
+        $j = jQuery.noConflict();
+        $j(document).ready(function () {
+            $j('table thead').addClass('myTableHeader');
+            $j('table tbody').addClass('myTableBody');
+            $j("[id$=theaddrs]").tablesorter();
+        });
+    </script>
+    <style>
+        td {
+            vertical-align:top !important;
+        }
+
+        .sticky {
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+        .sticky+.content {
+            padding-top: 102px;
+        }
+        
+        .myTableBody {
+
+            height:200px;
+            width:100%;
+        }
+        .myTableHeader {
+            position: relative;
+            display: relative;
+            table-layout: fixed;
+            width: 100% !important;
+            overflow:hidden;
+        }
+
+        table th{
+            width: 100% !important;
+            top: 0;
+            position: sticky;
+        }
+
+    </style>
+    <apex:pageBlock >
+        <apex:outputText rendered="{!(org62Opportunities.size = 0)}" value="{!$Label.Org62_Opportunity_Error}" />
+        <apex:outputText style="font-weight:800" rendered="{!(org62Opportunities.size <> 0)}" value="Total number of Opportunity record(s) : " />
+        <apex:outputText style="font-weight:800" rendered="{!(org62Opportunities.size <> 0)}" styleClass="header" value="{!org62Opportunities.size}" />
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <apex:outputLink style="font-weight:800" value="https://docs.google.com/presentation/d/1f_UAOW7PHPdoQRFmM9fquX6EujNG4QWB87xwk09VK7M/edit?usp=sharing"
+                         target="_blank"><span style="color:#1c87c9">Click to access Job Aid</span> </apex:outputLink> <br />
+        <apex:outputText style="font-weight:400" value="This list shows open and closed won Org62 Opportunity details for New and Add On Business deals that are associated to the corresponding Salesforce Account mapped from Org62." />
+        <br />
+        <apex:PageBlockTable value="{!org62Opportunities}" var="Org62Oppties" id="theaddrs" styleClass="tablesorter"
+                             rendered="{!(org62Opportunities.size != 0)}">
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Owner Name"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.OwnerId__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62Oppties.Owner}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.Owner = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Opportunity Name"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Name__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62Oppties.OppName}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.OppName = null)}"/>
+            </apex:column>
+
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Amount"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Amount__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText styleClass="header" value="{!Org62Oppties.CurrencyISOcode} "/>
+                <apex:outputText value="{0, number}">
+                    <apex:param value="{!Org62Oppties.Amount}" />
+                </apex:outputText>
+                <apex:outputText value="0" rendered="{!(Org62Oppties.Amount = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Close Date"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.CloseDate__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText styleClass="header" value="{0,date,MM'/'dd'/'yyyy}">
+                    <apex:param value="{!Org62Oppties.CloseDate}" />
+                </apex:outputText>
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.CloseDate = null)}"/>
+            </apex:column>
+            <apex:column >
+                <div style = "width: 100px">                    
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Stage"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.StageName__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                </div>                    
+                <apex:outputText value="{!Org62Oppties.StageName}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.StageName = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Forecast Category"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.ForecastCategoryName__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62Oppties.ForecastCategoryName}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.ForecastCategoryName = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="# of Products"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Has_Products__c .InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62Oppties.HasProducts}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.HasProducts = null)}"/>
+            </apex:column>
+            <apex:column >
+                <div style = "width: 150px">                    
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Next Steps"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Next_Steps_c__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                </div>
+                <apex:outputText value="{!Org62Oppties.NextSteps}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.NextSteps = null)}"/>
+            </apex:column>
+
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Decision Maker"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Decision_Maker_c__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62Oppties.DecisionMaker}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.DecisionMaker = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Deal Sponsor"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Executive_Sponsor_c__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62Oppties.ExecutiveSponser}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.ExecutiveSponser = null)}"/>
+            </apex:column>
+            <apex:column >
+                <div style = "width: 150px">                    
+                <apex:facet name="header">
+                        <apex:outputPanel >
+                            <apex:outputText value="Compelling Event"/>
+                            <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Compelling_Event_c__c.InlineHelpText}"/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </div>
+                <apex:outputText value="{!Org62Oppties.CompellingEvent}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.CompellingEvent = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Salesforce.com Exec Sponsor"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Salesforce_Exec_Sponsor_c__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62Oppties.SalesforceExec}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.SalesforceExec = null)}"/>
+            </apex:column>
+            <apex:column >
+                <div style = "width: 150px">                    
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Business Case"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Business_Case_ROI_c__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                </div>
+                <apex:outputText value="{!Org62Oppties.BusinessCase}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.BusinessCase = null)}"/>
+            </apex:column>
+            <apex:column >
+                <div style = "width: 150px">                                    
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Top Priorities"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Customer_Goals_c__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                </div>                                        
+                <apex:outputText value="{!Org62Oppties.CustomerGoals}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.CustomerGoals = null)}"/>
+            </apex:column>
+            <apex:column >
+                <div style = "width: 150px">                
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Red Flags"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Red_Flags_c__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                </div>
+                <apex:outputText value="{!Org62Oppties.RedFlags}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.RedFlags = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Lead / Sales Partner"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Lead_Sales_Partner_Role_c__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62Oppties.Lead_Sales_Partner}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.Lead_Sales_Partner = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Reseller Partner Type"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Reseller_Partner_Type_c__c .InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62Oppties.Reseller_Partner_Type}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.Reseller_Partner_Type = null)}"/>
+            </apex:column>
+            <apex:column >
+                <div style = "width: 150px">                
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Customer Use Case"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Customer_Use_Case_c__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                </div>
+                <apex:outputText value="{!Org62Oppties.CustomerUse}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.CustomerUse = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Lead / Sales Partner Role"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Lead_Sales_Partner_new_c__c .InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62Oppties.Lead_Sales_Partner_Role}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.Lead_Sales_Partner_Role = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Implementation Partner"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Implementation_Partner_c__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62Oppties.Implementation_Partner}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.Implementation_Partner = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Secondary Partner"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.SI_Reseller_c__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62Oppties.SI_Reseller}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.SI_Reseller = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Secondary Partner Role"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Secondary_Partner_Role_c__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62Oppties.Secondary_Partner}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.Secondary_Partner = null)}"/>
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText value="Reseller Partner"/>
+                        <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Opportunity__x.fields.Reseller_Partner_c__c.InlineHelpText}"/>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputText value="{!Org62Oppties.Reseller_Partner}" />
+                <apex:outputText value="N/A" rendered="{!(Org62Oppties.Reseller_Partner = null)}"/>
+            </apex:column>
+        </apex:PageBlockTable>
+    </apex:pageBlock>
+</apex:page>

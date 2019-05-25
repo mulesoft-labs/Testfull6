@@ -1,0 +1,7 @@
+<apex:page standardController="SBQQ__Quote__c" extensions="QuoteExtController"  action="{!onPreview}">
+<apex:pageMessages />
+<sbaa:approvalPreview approvals="{!approvals}"/>
+ <apex:form >
+        <apex:commandButton action="{!cancel}" value="Back"/>
+    </apex:form>
+</apex:page>

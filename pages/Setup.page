@@ -1,0 +1,43 @@
+<apex:page controller="SetupController" setup="true">
+  <apex:form >
+  <apex:pageMessages />
+  <apex:pageBlock title="Setup" mode="edit" >  
+            <apex:pageBlockButtons location="top" >
+                <apex:commandButton value="Save" action="{!onSave}"/>
+                <apex:commandButton value="Cancel" action="{!onCancel}"/>
+                </apex:pageBlockButtons>
+                <apex:pageBlockSection columns="1" title="Lead Settings">
+                    <!--apex:inputField value="{!atstSettings.Lead_Record_Types__c}"/-->
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel ><b>{!$Label.Lead_Record_types}</b></apex:outputLabel>
+						<apex:outputPanel layout="none">
+							<div class="requiredInput"><div class="requiredBlock"></div>
+	                        <apex:selectList value="{!strRecordType}" size="3" styleClass="fieldStyle" multiselect="true" required="false">
+	                            <apex:selectOptions value="{!RecordTypeList}" />
+	                        </apex:selectList>
+							</div>
+						</apex:outputPanel>
+                        
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection columns="2" title="Sales Team Access and Role">
+                    <!--apex:inputField value="{!atstSettings.Internal_Team_Member_Access__c}"/-->                   
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel ><b>{!$Label.Internal_Team_Member_Access}</b></apex:outputLabel>
+                        <apex:selectList value="{!atstSettings.Internal_Team_Member_Access__c}" size="1" styleClass="fieldStyle" >
+                        <apex:selectOptions value="{!InternalAccessList}" />
+                        </apex:selectList>
+                    </apex:pageBlockSectionItem>                    
+                    <apex:inputField value="{!atstSettings.Internal_Team_Member_Role__c}"/>
+                    <!--apex:inputField value="{!atstSettings.Partner_Team_Member_Access__c}"/-->
+                    <apex:pageBlockSectionItem >
+                    <apex:outputLabel ><b>{!$Label.Partner_Team_Member_Access}</b></apex:outputLabel>
+                        <apex:selectList value="{!atstSettings.Partner_Team_Member_Access__c}" size="1" styleClass="fieldStyle">
+                        <apex:selectOptions value="{!PartnerAccessList}" />
+                        </apex:selectList>
+                    </apex:pageBlockSectionItem>
+                    <apex:inputField value="{!atstSettings.Partner_Team_Member_Role__c}"/>
+                </apex:pageBlockSection>
+   </apex:pageBlock>
+   </apex:form>
+</apex:page>

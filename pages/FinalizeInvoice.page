@@ -1,0 +1,9 @@
+<apex:page standardController="Invoice__c" extensions="ClientInvoiceController" showheader="false" sidebar="false" action="{!finalizeInvoice}">
+
+<apex:sectionHeader title="Auto-Running Apex Code"/>
+  <apex:outputPanel >
+      You tried calling Apex Code from a button.  If you see this page, something went wrong.  You should have
+      been redirected back to the record you clicked the button from.
+  </apex:outputPanel>
+
+</apex:page>

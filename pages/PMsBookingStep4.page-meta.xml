@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>41.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <label>PMsBookingStep4</label>
+    <packageVersions>
+        <majorNumber>218</majorNumber>
+        <minorNumber>11</minorNumber>
+        <namespace>SBQQ</namespace>
+    </packageVersions>
+</ApexPage>

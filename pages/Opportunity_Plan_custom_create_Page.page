@@ -1,0 +1,29 @@
+<apex:page standardController="Opportunity" extensions="OppPlanCustomCreate" action="{!NewOpportunityPlan}">
+/*<script>
+
+var returnURL;
+
+window.onload =  function(){
+returnURL = gup('retURL');
+//alert('Set retURL = ' + returnURL);
+
+};
+
+function gup( name ){  //this function just grabs HTTP params by name
+
+name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]"); 
+var regexS = "[\\?&]"+name+"=([^&#]*)"; 
+var regex = new RegExp( regexS ); 
+var results = regex.exec( window.location.href );
+ if( results == null )    return ""; 
+else    return results[1];}
+
+function redirectBack(){
+//alert('Sending you back to ' + returnURL);
+window.location.href = '/' + returnURL;
+}
+
+</script>*/
+
+
+</apex:page>

@@ -1,0 +1,3 @@
+<apex:page standardController="Account">
+   This is my page for <i>{!Account.Name}</i>. <br/>
+</apex:page>

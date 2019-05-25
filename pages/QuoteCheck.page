@@ -1,0 +1,22 @@
+<apex:page standardController="SBQQ__Quote__c" extensions="QuoteCheckController" showHeader="true" sidebar="true" action="{!checkQuote}" >
+<style>
+.warningM3 .msgIcon, .warningMedium {
+    background-image: url({!URLFOR($Resource.warningLogo)}) !important;
+    background-position: 0 0;
+    width: 24px;
+    height: 24px;
+}
+
+.myCustomMessage .message {
+    background: none  !important;
+    border: solid !important;
+    border-color:  #00A0DF !important;
+}
+
+</style>
+
+    <apex:outputPanel styleClass="myCustomMessage">
+        
+<apex:pageMessages escape="false"/>
+    </apex:outputPanel>
+</apex:page>

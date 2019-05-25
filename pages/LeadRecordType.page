@@ -1,0 +1,3 @@
+<apex:page showHeader="false" sidebar="false" cache="false" standardController="Lead" extensions="LeadRecordTypeController" contentType="text/css">
+	{!leadRecordType}
+</apex:page>

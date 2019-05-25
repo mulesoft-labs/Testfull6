@@ -1,0 +1,6 @@
+<apex:page standardController="Account">
+   This is my page for <i>{!Account.Name}</i>. <br/>
+    <apex:pageBlock title="Viewing Listings Matching {!Account.Current_Support_Level__c}">   
+        <apex:dataTable value="{!Account.Contacts}" var="AccountSupport"></apex:dataTable>
+    </apex:pageBlock>
+</apex:page>

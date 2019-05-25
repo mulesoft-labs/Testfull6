@@ -1,0 +1,116 @@
+<apex:component ><div id="search" class="CoveoSearchInterface coveo-case-deflection" data-enable-history="false" data-design="new" data-pipeline="Support Deflection" data-results-per-page="8">
+  
+  <div class="CoveoCaseDeflection"></div>
+  <div class="CoveoAnalytics"></div>
+  <div class="coveo-main-section">
+        <div class="CoveoTriggers"></div>
+            <div class="coveo-result-layout-section"><span class="CoveoResultLayout"></span></div>
+       
+        <div class="CoveoHiddenQuery"></div>
+        <div class="CoveoErrorReport" data-pop-up="false"></div>
+        <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true">
+        
+<!-- Documentation Layout --> 
+<script type="text/html" data-field-documenttype="webpage" class="result-template" id="Documentation"><div class="coveo-result-frame">
+<div class="coveo-result-frame">
+  <div class="coveo-result-row"> 
+    <div class="coveo-result-cell" style="padding-left:0px">
+      <div class="coveo-result-row">
+        <div class="coveo-result-cell" style="font-size:18px;">
+          <div class="coveo-result-cell" style="vertical-align:top;font-size:16px;">
+           <a class="CoveoResultLink" data-always-open-in-new-window="true"></a></div>
+        </div>      
+      </div>
+      <div class="coveo-result-row">
+        <div class="coveo-result-cell">
+          <span class="CoveoExcerpt">
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="coveo-result-row">   
+  </div>
+</div>
+</div>
+</script>
+
+ 
+<!-- KB Layout --> 
+<script type="text/html" data-field-objecttype="knowledge" class="result-template" id="KBLayout">
+<div class="coveo-result-frame">
+  <div class="coveo-result-row"> 
+    <div class="coveo-result-cell" style="padding-left:0px">
+      <div class="coveo-result-row">
+        <div class="coveo-result-cell" style="font-size:18px;">
+          <div class="coveo-result-cell" style="vertical-align:top;font-size:16px;">
+           <a class="CoveoSalesforceResultLink" data-always-open-in-new-window="true" data-href-template="https://${window.location.hostname}/s/article/${raw.sfurlname}"></a></div>
+        </div>      
+      </div>
+      <div class="coveo-result-row">
+        <div class="coveo-result-cell">
+          <span class="CoveoExcerpt">
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="coveo-result-row">   
+  </div>
+</div>
+</div>
+</script>
+
+
+<!-- Announcement Layout --> 
+<script type="text/html" data-field-objecttype="announcement" class="result-template" id="AnnouncementLayout">
+<div class="coveo-result-frame">
+  <div class="coveo-result-row"> 
+    <div class="coveo-result-cell" style="padding-left:0px">
+      <div class="coveo-result-row">
+        <div class="coveo-result-cell" style="font-size:18px;">
+          <div class="coveo-result-cell" style="vertical-align:top;font-size:16px;">
+           <a class="CoveoSalesforceResultLink" data-always-open-in-new-window="true" data-href-template="https://${window.location.hostname}/s/article/${raw.sfurlname}"></a></div>
+        </div>      
+      </div>
+      <div class="coveo-result-row">
+        <div class="coveo-result-cell">
+          <span class="CoveoExcerpt">
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="coveo-result-row">   
+  </div>
+</div>
+</div></script>
+
+
+<!-- RCA Layout --> 
+<script type="text/html" data-field-objecttype="root_cause_analysis" class="result-template" id="RCALayout">
+<div class="coveo-result-frame">
+  <div class="coveo-result-row"> 
+    <div class="coveo-result-cell" style="padding-left:0px">
+      <div class="coveo-result-row">
+        <div class="coveo-result-cell" style="font-size:18px;">
+          <div class="coveo-result-cell" style="vertical-align:top;font-size:16px;">
+           <a class="CoveoSalesforceResultLink" data-always-open-in-new-window="true" data-href-template="https://${window.location.hostname}/s/article/${raw.sfurlname}"></a></div>
+        </div>      
+      </div>
+      <div class="coveo-result-row">
+        <div class="coveo-result-cell">
+          <span class="CoveoExcerpt">
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="coveo-result-row">   
+  </div>
+</div>
+</div></script>    
+        </div>
+    </div> 
+</div>
+</apex:component>

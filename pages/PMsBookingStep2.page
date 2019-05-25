@@ -1,0 +1,71 @@
+<apex:page standardController="Opportunity"
+           extensions="CMsBookingController" tabStyle="Opportunity">
+<head>
+  <!-- Import the Design System style sheet -->
+  <apex:slds />
+</head>    
+  <script>
+  function confirmCancel() {
+      var isCancel = confirm("Are you sure you wish to cancel?");
+      if (isCancel) return true;
+  
+     return false;
+  }  
+  </script>
+   <!-- REQUIRED SLDS WRAPPER -->
+  <div class="slds-scope">    
+  <apex:sectionHeader title="Child Opportunity" subtitle="Step 2 of 4"/>
+  <apex:form >
+    <apex:pageBlock title="Opportunity Information" mode="edit">
+      <apex:pageBlockButtons >
+		<apex:commandButton action="{!step3}" rerender="rerenderId" status="pageStatus" value="Save"/>
+		<apex:commandButton action="{!goToStep3}" value="Next"/>
+        <apex:commandButton action="{!cancel}" value="Cancel" 
+                            onclick="return confirmCancel()" immediate="true"/>
+      </apex:pageBlockButtons>
+      <apex:pageMessages id="rerenderId"/>
+
+      <apex:actionStatus id="pageStatus">
+    	<apex:facet name="start">
+    		<div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;">
+        		&nbsp;
+    		</div>
+        <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 25% 50%">
+            <div style="display: inline-block; padding: 2px; background-color: #fff; width: 250px;">
+                <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                <span style="display: inline-block; padding: 10px 0px;">Updating Child Opportunity...</span>
+            </div>
+        </div>
+        </apex:facet>
+		</apex:actionStatus>      
+      <apex:pageBlockSection >
+      	<apex:pageBlockSectionItem >
+			<apex:outputLabel >Parent Opportunity</apex:outputLabel>
+            <apex:outputLink value="/{!opportunity.Id }">{!opportunity.Name }</apex:outputLink>
+          </apex:pageBlockSectionItem>
+      	<apex:outputField value="{!opportunity.Mulesoft_ACV__c}"/>          
+      </apex:pageBlockSection>  
+
+        <apex:outputPanel id="ChildOppsList">
+	         <!--Here are the Opportunities Created, please update the Type, Close date etc -->
+                <apex:repeat value="{!childOppsAll}" var="oppty" >
+                    <apex:pageBlockSection title="{!oppty.Name}" collapsible="false" columns="1">
+                        <apex:inputField value="{!oppty.Name}"/>                             
+                        <apex:inputField value="{!oppty.stageName}"/>                                
+                        <apex:inputField value="{!oppty.Type}"/>      
+                        <apex:inputField value="{!oppty.Add_On_Type__c}"/>      
+                        <apex:inputField value="{!oppty.CloseDate}"/>
+                        <apex:inputField value="{!oppty.Mulesoft_ACV__c}"/>
+                        <apex:inputField value="{!oppty.Future_Dated_Order__c}"/>
+                        <apex:inputField value="{!oppty.Multi_Year_Deal__c}"/>                        
+                        <apex:inputField value="{!oppty.If_yes_Year_X_of_Total_Years__c}"/>
+                        <apex:inputField label="Quote Start Date" value="{!oppty.SBQQ__PrimaryQuote__r.SBQQ__StartDate__c}"/>
+                        <apex:inputField label="Quote End Date" value="{!oppty.SBQQ__PrimaryQuote__r.SBQQ__EndDate__c}"/>                        
+                    </apex:pageBlockSection>
+                </apex:repeat>
+            </apex:outputPanel>
+    </apex:pageBlock>
+  </apex:form>
+  </div>
+  <!-- / REQUIRED SLDS WRAPPER -->
+</apex:page>

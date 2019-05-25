@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>43.0</apiVersion>
+    <availableInTouch>true</availableInTouch>
+    <confirmationTokenRequired>true</confirmationTokenRequired>
+    <description>Override default robots.txt file which looks like below
+#
+# default robots.txt for sfdc communities sites
+#
+# For use by salesforce.com
+#
+User-agent: *    # applies to all robots
+Allow: /      # allow all
+Disallow: */secur/forgotpassword.jsp?*
+
+Sitemap: https://support.mulesoft.com/s/sitemap.xml</description>
+    <label>Support Center Robots</label>
+</ApexPage>

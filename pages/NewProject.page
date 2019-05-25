@@ -1,0 +1,290 @@
+<apex:page id="newProject" standardController="Project__c" extensions="NewProjectController">
+
+    <apex:includeScript value="{!URLFOR($Resource.JqueryDevel,'js/jquery-1.3.2.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.JqueryDevel,'js/jquery-ui-1.7.2.custom.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.jsonSuggestJS)}" />
+    <apex:stylesheet value="{!URLFOR($Resource.JqueryDevel,'css/cupertino/jquery-ui-1.7.2.custom.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.jsonSuggest,'/JSONSuggestBox/jsonSuggest.css')}" />
+    
+    <script >
+        //Attempt to override JavaScript that is setting focus on Date field
+        function setFocusOnLoad() {}
+        //Or use beenFocused = true;
+    </script>   
+    
+    <script>jQuery.noConflict();</script>
+    
+    <style type="text/css">
+        .linkout {background-color: #FFFFFF;}
+        .linkover {background-color:#3399FF;
+                   font-weight:bold;
+                   text-decoration:underline;
+        }
+    </style>
+    
+    <div id="projectId" style="display:none"></div>
+    
+    <script type="text/javascript">
+    
+        function disableEnterKey(e){
+             var key;    
+             if(window.event)
+                  key = window.event.keyCode; //IE
+             else
+                  key = e.charCode; //firefox     
+                    
+             return (key != 13);
+        }        
+        
+        function detectDelete(e){
+             var key;     
+             if(window.event)
+                  key = window.event.keyCode; //IE
+             else
+                  key = e.which; //firefox  
+             if (key==46||key==63272||key==8) {
+
+             }else {
+             
+             }
+        
+        }
+        
+        function hideDefaultJsonSuggest() {
+            if (document.getElementById) { // DOM3 = IE5, NS6
+                document.getElementById('{!$Component.newProject.theForm.theBlock.cloningProjectSection.suggestDefaults}').style.display = 'none';
+            }
+            else {
+                if (document.layers) { // Netscape 4
+                    document.suggestDefaults.visibility = 'hidden';
+                }
+                else { // IE 4
+                    document.all.suggestDefaults.style.visibility = 'hidden';
+                }
+            }
+        }
+           
+        function confirmCancel() {
+            var isCancel = confirm("Are you sure you wish to cancel?");             
+            if (isCancel){
+                return true;
+            }
+            return false;
+        }
+        
+        function setProjectId(id) {    
+            document.getElementById('projectId').innerHTML = id;           
+        }
+        
+        function getProjectId() {   
+            return document.getElementById('projectId').innerHTML;   
+        }
+        
+        function esc(myid) {
+            return '#' + myid.replace(/(:|\.)/g,'\\\\$1');
+        }
+        
+        
+        
+    </script> 
+    <script>
+        function showDefaultJsonSuggest() {
+            if (document.getElementById) { // DOM3 = IE5, NS6                                        
+                document.getElementById('{!$Component.newProject.theForm.theBlock.cloningProjectSection.suggestDefaults}').style.display = 'inline';
+            }
+            else {
+                if (document.layers) { // Netscape 4
+                    document.suggestDefaults.visibility = 'visible';
+                }
+                else { // IE 4
+                    document.all.suggestDefaults.style.visibility = 'visible';
+                }
+            }
+        }
+        
+        function assignProjectText(id, name){
+            document.getElementById('projectId').innerHTML = id;  
+            document.getElementById('projLookup').value = name;
+            projSelected(id,name);
+            hideDefaultJsonSuggest();
+        }
+        
+    </script> 
+    
+    <apex:form id="theForm" >
+        <apex:pageBlock id="theBlock" onclick="stopClickEvent(event);" >
+            
+            <script>
+                function stopClickEvent(e){
+                    if (!e) e = window.event;
+                    var opSelected = 20;
+                    var clickEvent = e; 
+                    
+                    var linkId = "{!$Component.newProject.theForm.theBlock.cloningProjectSection.repeatTable}:";
+                               
+                    if ((e.target || e.srcElement).id != 'projLookup'){
+                        if ((e.target || e.srcElement).id != 'resultItemCell'){
+                            for(var i = 0;i<10;i++){                                
+                                if ((e.target || e.srcElement).id == (linkId+i+":projectLink")){
+                                    opSelected = i;
+                                    break;
+                                } 
+                            }
+                            if(opSelected == 20){
+                                hideDefaultJsonSuggest();
+                            }
+                        } 
+                    }                            
+                }
+            </script>
+            
+            <apex:actionFunction name="projSelected" action="{!projectSelected}" rerender="theProjectInfo" immediate="true">
+                <apex:param name="projId" value="" />
+                <apex:param name="textName" value="" />
+            </apex:actionFunction>
+            
+            <apex:actionFunction name="enableProjectLookup" action="{!setEnableLookup}" rerender="theCloningPanel" immediate="true"/>
+                
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save Project" action="{!saveProject}"/>
+                <apex:commandButton value="Cancel" action="{!cancelOp}" onclick="confirmCancel();" immediate="true"/>
+            </apex:pageBlockButtons>
+            
+            
+            <apex:outputPanel id="theCloningPanel">             
+                <apex:pageBlockSection rendered="{!enableLookupSection==true}" id="cloningProjectSection" columns="2" title="Clone Project">
+                    
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Clone Project" for="projCloning"/>
+                        <apex:inputCheckbox id="projCloning" onclick="enableProjectLookup();"  value="{!cloneFromExistingProject}" />
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem rendered="{!enableLookup==true}">
+                        <apex:outputLabel value="Project Search" for="projLookup"/>
+                        <input id="projLookup" placeholder="Project Name" type="input" size="20"  onkeypress="detectDelete(event);return disableEnterKey(event);" />
+                    </apex:pageBlockSectionItem>
+                                       
+                    <apex:outputPanel id="suggestDefaults" style="position: absolute;top:115.2px;left:898px;display: none;" >
+                        <TABLE id="resultsTable" style="background-color: #FFFFFF;vertical-align: baseline;border:1px solid #CCC;padding:0px;margin:0px 2px;z-index:5;">
+                            <apex:repeat id="repeatTable" value="{!projectCompletion}" var="pc">
+                                <tr id="resultItemRow" style="background-color: #FFFFFF;" onclick="assignProjectText('{!pc.proj.Id}','{!pc.proj.Name}')">                                            
+                                    <td id="resultItemCell" onmouseover="this.className='linkover'" onmouseout="this.className='linkout'" style="position:relative;width:305px;margin:0px;padding:5px;height:35px;cursor:pointer;">
+                                        <apex:outputPanel id="ResultItem"  >
+                                            <apex:commandLink id="projectLink" reRender="toRerender" immediate="true" onclick="assignProjectText('{!pc.proj.Id}','{!pc.proj.Name}')">
+                                                {!pc.proj.Name}<p style="font-size: x-small;position:absolute;right: 1px;">{!pc.dateString}</p>
+                                            </apex:commandLink>                                        
+                                        </apex:outputPanel>
+                                    </td>                                            
+                                </tr>
+                            </apex:repeat>  
+                        </TABLE>
+                    </apex:outputPanel>                   
+                    
+                   <script>
+    
+                        jQuery( function() {    projAttachJsonSuggest(false) ; } );
+                            
+                        function projAttachJsonSuggest(retry) {     
+                                                                    
+                            var recipient = jQuery("#projLookup");                                    
+                            
+                            recipient.focus(
+                                function(){
+                                    if(this.value == ''){
+                                        showDefaultJsonSuggest();                    
+                                    }
+                                }                                            
+                            )
+                            
+                            var done = recipient.data("jsonSuggest");           
+                                if ( done != null ) return;
+                                      
+                            recipient.jsonSuggest( 
+                                function(text, wildCard, caseSensitive, notCharacter) {
+                                     hideDefaultJsonSuggest();                                            
+                                     res = eval(jQuery.ajax({         
+                                
+                                        url:        '{!URLFOR($Page.ProjectSearch)}?name='+text,
+                                        type:       'GET',
+                                        cache:      false,
+                                        async:      false}).responseText);            
+                        
+                                    return res;
+                        
+                                },
+                                { // options                    
+                                    onSelect: function (item) {projSelected(item.id,item.text);setProjectId(item.id);},
+                                    width:300, 
+                                    maxHeight:1000,
+                                    ajaxResults: true,
+                                    debounceWait: 1000,
+                                    minCharacters: 2
+                                }
+                            );  
+                            recipient.data("jsonSuggest");                                                                                                                                   
+                        }
+                    </script> 
+                    
+                </apex:pageBlockSection>            
+            </apex:outputPanel>
+            
+            <apex:outputPanel id="theProjectInfo"> 
+                <apex:pageBlockSection id="newProjectSection" columns="1" title="New Project">
+    
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Project Name" for="projName"/>
+                        <apex:inputField id="projName" value="{!Project__c.name}"/>
+                    </apex:pageBlockSectionItem>
+    
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Account" for="projAcc"/>
+                        <apex:inputField id="projAcc" value="{!Project__c.Account__c}"/>
+                    </apex:pageBlockSectionItem>
+    
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Target Completion Date" for="trgtCompletionDate"/>
+                        <apex:inputField id="projTrgtDate" value="{!Project__c.Projected_Completion_Date__c}"/>
+                    </apex:pageBlockSectionItem>
+    
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Project Limit" for="projLimit"/>
+                        <apex:inputField id="projLimit" value="{!Project__c.Project_Limit__c}"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    
+                     <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Generate From Project Template" for="projTemplate"/>
+                        
+                        <apex:selectList size="1" value="{!selectedProjectId}" >
+                        
+
+
+ 
+ 
+						     <apex:OutputLabel value="Select Project: " style="font-weight:bold" ></apex:OutputLabel>
+						     	<apex:selectOptions value="{!ProjectTemplates}"></apex:selectOptions>
+        
+   						 </apex:selectList>
+                       <!-- <apex:inputCheckBox id="projTemplate" value="{!cloneFromProjectTemplate}"/> -->
+                       
+                       
+                    </apex:pageBlockSectionItem>
+                    
+                    <!-- 
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Generate Default Milestones" for="projMilestones"/>
+                        <apex:inputField id="projMilestones" value="{!Project__c.Generate_Default_Milestones__c}"/>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Generate Default Work Tasks" for="projWorkTasks"/>
+                        <apex:inputField id="projWorkTasks" value="{!Project__c.Generate_Default_Work_Tasks__c}"/>
+                    </apex:pageBlockSectionItem>
+                    
+                     -->
+                    
+                </apex:pageBlockSection>            
+            </apex:outputPanel>            
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

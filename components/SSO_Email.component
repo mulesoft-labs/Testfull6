@@ -1,0 +1,17 @@
+<apex:component access="global">
+ <apex:attribute name="Allowed" type="Boolean" description=""/>
+ <apex:attribute name="userName" type="String" description=""/>
+<span style="font-family:verdana;font-size:12px">  
+<p>Welcome to the {!$Network.Name}!</p>
+ 
+<p>You are now registered with the {!$Network.Name}. If you want to access the {!$Network.Name} directly in the future please use:<br/> 
+https://anypoint.mulesoft.com/accounts/support </p>
+
+<p>We are looking forward to working with you!</p>
+
+<p>Cheers,<br/>
+MuleSoft Support</p>
+<!--<img src="https://na29.salesforce.com/servlet/servlet.ImageServer?id=01530000000RRbf&oid=00D0q000000CmUJ"/>-->
+<img src="{!LEFT($CurrentPage.URL,FIND('/',$CurrentPage.URL,9)) & 'servlet/servlet.ImageServer?id=01530000000RRbf&oid=00DQ000000BJd6Z'}"/>
+</span>
+</apex:component>

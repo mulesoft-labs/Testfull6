@@ -1,0 +1,69 @@
+<apex:page controller="CMsViewLicenseKeyCtrl" action="{!url}">
+    <head>
+      <!-- Import the Design System style sheet -->
+      <apex:slds />
+    </head>
+    <style type="text/css">
+		div.attachmentDiv .actionColumn {
+          	display:none; 
+           	visibility:hidden 
+		} 
+        
+        .attachmentStyle {
+        	font-size: 30px; 
+        	weight: bold;
+        	margin: 25px;
+        }
+
+		.slds-scope a.slds-button {
+			text-align: center;
+		    font-size: 35px;	
+			font-weight: bolder !important;        
+        }     
+        .pbHeader {
+        	margin-bottom: 20px !important;
+        	margin-top: 15px !important;
+        
+        }
+        
+		.slds-scope .slds-button_success:link      
+    	{
+        	color: white !important;
+        	font-weight: lighter !important;
+        }
+        
+        .buttonSize {
+            margin-left: 10px;
+            height: 60px;
+            padding: 15px !important;
+        }
+        
+        .bPageBlock {
+        	border: 3px solid rgb(236, 235, 234) !important;
+        }
+    </style>   
+	<body>    
+    <!-- REQUIRED SLDS WRAPPER -->    
+    <div class="slds-scope">    
+        <div class ="attachmentDiv"> 
+              <div class="slds-grid">
+                <div class="slds-col slds-align-bottom slds-p-top_small">
+                  <p class="slds-text-body_small">
+                        <div class="attachmentStyle">License Key Download</div>		                      
+                        <!-- classic attachments related list -->
+                        <apex:relatedList subject="{!licKeyReqOrTempEntitlementHistoryObj}" list="CombinedAttachments" title="License Key Attachment">
+                            <apex:facet name="header">                             
+                            <apex:form >                
+                                <apex:outputLink value="{!URLFOR($Action.Attachment.Download, attId)}" target="_blank"  styleClass="slds-button slds-button_success buttonSize"> Click to download </apex:outputLink> 
+                                <apex:commandLink rendered="{!isLicKeyReq}" action="{!returnToPrevPage}" value="Return to License Key Request" style="margin-left: 50px; font-size: 18px;"/>                                
+								<apex:commandLink rendered="{!!isLicKeyReq}" action="{!returnToPrevPage}" value="Return to Temporary Entitlement Request History" style="margin-left: 50px; font-size: 18px;"/>                                
+                            </apex:form>                    
+                            </apex:facet>
+                        </apex:relatedList>        
+                    </p>
+                </div>
+              </div>
+        </div>
+    </div>
+    </body>        
+</apex:page>

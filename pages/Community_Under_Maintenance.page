@@ -1,0 +1,42 @@
+<apex:page showHeader="false" title="{!$Label.site.in_maintenance}">
+  <html>
+    <head>
+      <meta charset="UTF-8"/>
+      <title>Support Center Maintenance</title>
+      <style>
+        @font-face {
+          font-family: "DIN Pro";
+          font-style: normal;
+          font-weight: 400;
+          src: url("https://cdn.anypoint.mulesoft.com/artifacts/anypoint-styles/fonts/DINPro-Light.eot?#iefix") format("embedded-opentype"), 
+          url("https://cdn.anypoint.mulesoft.com/artifacts/anypoint-styles/fonts/DINPro-Light.woff") format("woff"), 
+          url("https://cdn.anypoint.mulesoft.com/artifacts/anypoint-styles/fonts/DINPro-Light.ttf") format("truetype"), 
+          url("https://cdn.anypoint.mulesoft.com/artifacts/anypoint-styles/fonts/DINPro-Light.svg#icon") format("svg");
+        }
+        body {
+          background: url('{!URLFOR($Resource.Community_Maintenance_Page,'resources/background.png')}');
+          background-repeat: no-repeat;
+          background-size: cover;
+          margin: auto;
+          margin-top: 5%;
+          margin-bottom: 5%;
+          max-width: 550px;
+          font-family: "DIN Pro";
+        }
+        a {
+          font-family: "Open Sans";
+          font-weight: normal;
+          color: #00a2df;
+          text-decoration: none;
+        }
+      </style>
+    </head>
+
+    <body>
+      <div>
+        <img src="https://www.mulesoft.com/sites/default/files/MS_Logo.svg" alt="MuleSoft"/>
+      </div>
+      <h1>Currently the MuleSoft Support Center is undergoing maintenace.<br/>Please, contact us by sending an&nbsp;email&nbsp;to <a href="mailto:support@mulesoft.com">support@mulesoft.com</a></h1>
+    </body>
+  </html>
+</apex:page>

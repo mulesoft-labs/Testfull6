@@ -1,0 +1,648 @@
+<apex:page standardController="Account" extensions="CMsAddOnModel" tabStyle="Account" showHeader="false" sidebar="false" standardStylesheets="true">
+    <head>
+        <meta charset="utf-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"></link>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    </head>
+    <style>
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        body { font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; font-style: normal; font-variant: normal; font-weight: 500; line-height: 12px; color:#4a4a56;}
+
+        .input{
+            text-align: left;
+        }
+
+        body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .generic, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock {
+            background-color: WHITE;
+            border-bottom: 1px solid WHITE;
+            border-left: 1px solid WHITE;
+            border-right: 1px solid WHITE;
+            -moz-border-radius: 4px;
+            -webkit-border-radius: 4px;
+            border-radius: 4px;
+        }
+
+        .bPageBlock {
+            border-top: 1px solid WHITE !important;
+        }
+
+        body .bPageBlock .pbTitle h2 {
+            font-weight: bold;
+            font-size: 1.2em;
+            padding-left: 44%;
+        }
+        .check{
+            text-align: left;
+            font-size : 0.8em;
+        }
+
+        .check1{
+            text-align: right;
+        }
+
+        .check2{
+            text-align: center;
+            padding-left : 60%;
+        }
+
+        .check3{
+            text-align: center;
+            padding-left : 18%;
+        }
+
+        .labels{
+            text-align: left;
+        }
+
+        .bPageBlock .detailList tr td, .bPageBlock .detailList tr th, .hoverDetail .bPageBlock .detailList tr td, .hoverDetail .bPageBlock .detailList tr th {
+            border-top: 1px solid WHITE;
+        }
+
+        body .bPageBlock .detailList tr td, body .bPageBlock .detailList tr th, body table.list tr td, body table.list tr th, body .hoverDetail .bPageBlock .detailList tr td, body .hoverDetail .bPageBlock .detailList tr th {
+            border-color: WHITE;
+        }
+
+        .bPageBlock .detailList .data2Col {
+            padding-right: 2px;
+            padding-bottom: 2px;
+            padding-left: 10px;
+            text-align: left;
+            width: 99%;
+        }
+
+        body .bPageBlock .pbBody .data2Col{
+            padding-top: 1px;
+            padding-bottom: 1px;
+        }
+
+        .pbHeader{
+            font-size: 1.0em;
+            text-align : Center
+            font-weight : Bold;
+        }
+        #floatButton{
+            position: fixed;
+            width:100%
+        }
+
+        .hideDropdown select{
+            visibility: hidden !important;
+            display: block !important;
+        }
+    </style>
+    <script>
+        $ = jQuery.noConflict();
+        $(document).ready(function(){
+            $('[data-toggle="popover"]').popover();
+        });
+
+        function changeImg(clickedOption, spanId, imgId) {
+            if (clickedOption.value == "Yes" || clickedOption.value == "On Track"){
+                document.getElementById(spanId).innerHTML = "<img src='/img/samples/color_green.gif' width='20' height='20'>";
+                document.getElementById(imgId).style.display= 'none';
+            } else if(clickedOption.value == "No" || clickedOption.value == "Significant Risk"){
+                document.getElementById(spanId).innerHTML = "<img src='/img/samples/color_red.gif' width='20' height='20'>";
+                document.getElementById(imgId).style.display= 'none';
+            } else if(clickedOption.value == "WIP" || clickedOption.value == "Moderate Risk"){
+                document.getElementById(spanId).innerHTML = "<img src='/img/samples/color_yellow.gif' width='20' height='20'>";
+                document.getElementById(imgId).style.display= 'none';
+            } else if(clickedOption.value == "Churned"){
+                document.getElementById(spanId).innerHTML = "<img src='/resource/color_gray' width='20' height='20'>";
+                document.getElementById(imgId).style.display= 'none';
+            } else {
+                document.getElementById(spanId).innerHTML = "";
+                document.getElementById(imgId).style.display= 'none';
+            }
+        }
+    </script>
+
+    <body style="background-color: WHITE;">
+    <!-- REQUIRED SLDS WRAPPER -->
+    <div class="slds-scope">
+        <apex:form >
+            <apex:pageBlock title="Overall Health">
+                <div id='floatButton'>
+                    <div style="text-align: center">
+                        <apex:commandLink value="Save" action="{!save}" id="savebutton" styleClass="btn" oncomplete="window.top.location.href = '{!'/'+account.Id}';"></apex:commandlink>
+                    </div>
+                </div>
+                <apex:pageBlockSection columns="1">
+                    <apex:outputPanel id="outers" styleClass="panel">
+                        <table class="detailList" align="right" >
+                            <tr>
+                                <td class="labelCol" ><apex:outputLabel styleClass="check" value="Current Health Status">
+                                        <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.Current_Health_Status__c.InlineHelpText}">
+                                            <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                        </a>
+                                    </apex:outputLabel>
+                                </td>
+                                <td><apex:inputField styleClass="check" value="{!accounts[0].Current_Health_Status__c}" onchange="changeImg(this,'healthSpan','healthImg')"></apex:inputField>
+                                    <span id ="healthSpan"></span>
+                                    <span id = "healthImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].Current_Health_Status__c ='On Track',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].Current_Health_Status__c ='Moderate Risk',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].Current_Health_Status__c ='Significant Risk',true,false)}"/>
+                    <apex:image value="{!$Resource.color_gray}" width="20" height="20" rendered="{!IF(accounts[0].Current_Health_Status__c ='Churned',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Current_Health_Status__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                </td>
+
+                                <td class="labelCol" >
+                                    <apex:outputLabel styleClass="check" value="Risk Mitigation Plan Owner">
+                                        <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.Risk_Mitigation_Plan_Owner__c.InlineHelpText}">
+                                            <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                        </a>
+                                    </apex:outputLabel>
+                                </td>
+                                <td>
+                                    <apex:inputField styleClass="check" value="{!accounts[0].Risk_Mitigation_Plan_Owner__c}"></apex:inputField>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="labelCol" ><apex:outputLabel styleClass="check" value="If there's risk, what is the issue?">
+                                        <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.If_there_s_risk_what_is_the_issue__c.InlineHelpText}">
+                                            <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                        </a>
+                                    </apex:outputLabel>
+                                </td>
+                                <td>
+                                    <apex:inputtextArea styleClass="check" value="{!accounts[0].If_there_s_risk_what_is_the_issue__c}" cols="65" rows="3"/>
+                                </td>
+
+                                <td class="labelCol" ><apex:outputLabel styleClass="check" value="If there's risk, what is the plan to mitigate?">
+                                        <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.If_risk_what_is_the_plan_to_mitigate__c.InlineHelpText}">
+                                            <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                        </a>
+                                    </apex:outputLabel>
+                                </td>
+                                <td>
+                                    <apex:inputtextArea styleClass="check" value="{!accounts[0].If_risk_what_is_the_plan_to_mitigate__c}" cols="65" rows="3"/>
+                                </td>
+                            </tr> 
+							<tr>
+                                <td class="labelCol" ><apex:outputLabel styleClass="check" value="Key Risk Category"/>
+                                	<a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.Key_Risk_Category__c.InlineHelpText}">
+                                    	<apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                    </a>
+                                </td>
+                                <td style="padding-top:5px">
+                                      <span><apex:inputField styleClass="check" value="{!accounts[0].Key_Risk_Category__c}"></apex:inputField>
+                                        <apex:outputText rendered="{!IF(accounts[0].Key_Risk_Category__c ='',true,false)}">
+                                        </apex:outputText>
+                                      </span>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>                            
+                            <tr>
+                                <td class="labelCol" ><apex:outputLabel styleClass="check" value="Customer Expansion Score"/>
+                                </td>
+                                <td style="padding-top:5px">
+                                      <span>
+                                        <apex:image url="/img/samples/color_green.gif" width="100" height="20" rendered="{!IF(accounts[0].Customer_Expansion_Score__c >= 31,true,false)}"/>
+                                        <apex:image url="/img/samples/color_yellow.gif" width="100" height="20" rendered="{!IF((accounts[0].Customer_Expansion_Score__c >= 15 && accounts[0].Customer_Expansion_Score__c < 31),true,false)}"/>
+                                        <apex:image url="/img/samples/color_red.gif" width="100" height="20" rendered="{!IF(accounts[0].Customer_Expansion_Score__c < 15,true,false)}"/>
+                                        <apex:outputText rendered="{!IF(accounts[0].Current_Health_Status__c ='',true,false)}"></apex:outputText>
+                                      </span>
+                                </td>
+                                <td class="labelCol" ><apex:outputLabel styleClass="check" value="Customer Health Score"/>
+                                </td>
+                                <td style="padding-top:5px">
+                                      <span>
+                                        <apex:image url="/img/samples/color_green.gif" width="100" height="20" rendered="{!IF(accounts[0].Customer_Health_Score__c >= 32,true,false)}"/>
+                                        <apex:image url="/img/samples/color_yellow.gif" width="100" height="20" rendered="{!IF((accounts[0].Customer_Health_Score__c >= 16 && accounts[0].Customer_Health_Score__c < 32),true,false)}"/>
+                                        <apex:image url="/img/samples/color_red.gif" width="100" height="20" rendered="{!IF(accounts[0].Customer_Health_Score__c < 16,true,false)}"/>
+                                        <apex:outputText rendered="{!IF(accounts[0].Current_Health_Status__c ='',true,false)}"></apex:outputText>
+                                      </span>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            <hr/>
+            <apex:pageBlock title="OBD & Expansion Readiness" id="blockB">
+                <apex:facet name="header">
+                    <apex:outputpanel >
+                        <apex:outputText style="font-weight:bold;font-size:1.0em;float:left;padding-left:13.5%" value="OBD & Expansion Readiness"/>
+                        <apex:outputLink style="Float:left;padding-left:10%; font-size:0.8em" value="https://mulesoft.bloomfire.com/series/41236"  target="_blank"> Click to access the Customer Expansion Playbook </apex:outputLink>
+                    </apex:outputpanel>
+                </apex:facet>
+            </apex:pageBlock>
+            <hr/>
+            <apex:pageBlock >
+                <apex:pageBlockSection columns="1">
+                    <apex:pageBlockSectionitem >
+                        <apex:outputPanel id="outers" styleClass="panel">
+                            <table class="detailList" align="right" >
+                                <tr>
+                                    <td ><apex:outputLabel styleClass="check2" style="margin-left:20%" value="Overall"/></td>
+                                    <td></td>
+                                    <td ><apex:outputLabel styleClass="check2" style="margin-left:80%" value="People"/></td>
+                                    <td></td>
+                                    <td ><apex:outputLabel styleClass="check2" value="Business Outcomes"/></td>
+                                </tr>
+                            </table>
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionitem>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection columns="1">
+                    <apex:pageBlockSectionitem >
+                        <apex:outputPanel id="outers" styleClass="panel">
+                            <table class="detailList" align="right" >
+                                <tr>
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="Account Plan">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.Account_Plan__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].Account_Plan__c}" onchange="changeImg(this,'accPlanSpan','accPlanImg')"></apex:inputField>
+                                        <span id ="accPlanSpan"></span>
+                                        <span id = "accPlanImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].Account_Plan__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].Account_Plan__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].Account_Plan__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+
+                                    <td class="labelCol" style = "font-weight: heavy"><apex:outputLabel styleClass="check" value="* Executive Engagement *">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.Executive_Customer_Engagement__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].Executive_Customer_Engagement__c}" onchange="changeImg(this,'custEngSpan','custEngImg')"></apex:inputField>
+                                        <span id ="custEngSpan"></span>
+                                        <span id = "custEngImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].Executive_Customer_Engagement__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].Executive_Customer_Engagement__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].Executive_Customer_Engagement__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="* Value Realization Complete *">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.Business_Outcomes_Platform_Benefits__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>                </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].Business_Outcomes_Platform_Benefits__c}" onchange="changeImg(this,'bizOutcomeBenefitSpan','bizOutcomeBenefitImg')"></apex:inputField>
+                                        <span id ="bizOutcomeBenefitSpan"></span>
+                                        <span id = "bizOutcomeBenefitImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].Business_Outcomes_Platform_Benefits__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].Business_Outcomes_Platform_Benefits__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].Business_Outcomes_Platform_Benefits__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+                                </tr>
+                                <!-- End - ROW 1 -->
+                                <!-- Start - ROW 2 -->
+                                <tr>
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="Delivery Capability">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.Delivery_Capability__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].Delivery_Capability__c}" onchange="changeImg(this,'deliveryCapSpan','deliveryCapImg')"></apex:inputField>
+                                        <span id ="deliveryCapSpan"></span>
+                                        <span id = "deliveryCapImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].Delivery_Capability__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].Delivery_Capability__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].Delivery_Capability__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="Promoter">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.Promoter__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].Promoter__c}" onchange="changeImg(this,'promoterSpan','promoterImg')"></apex:inputField>
+                                        <span id ="promoterSpan"></span>
+                                        <span id = "promoterImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].Promoter__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].Promoter__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].Promoter__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="Success Plan">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.Success_Plan__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].Success_Plan__c}" onchange="changeImg(this,'successPlanSpan','successPlanImg')"></apex:inputField>
+                                        <span id ="successPlanSpan"></span>
+                                        <span id = "successPlanImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].Success_Plan__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].Success_Plan__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].Success_Plan__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+                                </tr>
+                                <!-- End - ROW 2 -->
+                                <!-- Start - ROW 3 -->
+                                <tr>
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="OBD Buy In">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.OBD_Buy_In__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].OBD_Buy_In__c}" onchange="changeImg(this,'ocdBuyInSpan','ocdBuyInImg')"></apex:inputField>
+                                        <span id ="ocdBuyInSpan"></span>
+                                        <span id = "ocdBuyInImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].OBD_Buy_In__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].OBD_Buy_In__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].OBD_Buy_In__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="Mobilizer">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.Mobilizer__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].Mobilizer__c}" onchange="changeImg(this,'mobilizerSpan','mobilizerImg')"></apex:inputField>
+                                        <span id ="mobilizerSpan"></span>
+                                        <span id = "mobilizerImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].Mobilizer__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].Mobilizer__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].Mobilizer__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <!-- End - ROW 3 -->
+                                <!-- Start - ROW 4 -->
+                                <tr>
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="Strategic Importance of Mulesoft">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.Strategic_Importance_of_Mulesoft__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].Strategic_Importance_of_Mulesoft__c}" onchange="changeImg(this,'strategicImpSpan','strategicImpImg')"></apex:inputField>
+                                        <span id ="strategicImpSpan"></span>
+                                        <span id = "strategicImpImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].Strategic_Importance_of_Mulesoft__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].Strategic_Importance_of_Mulesoft__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].Strategic_Importance_of_Mulesoft__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+                                </tr>
+                                <!-- End - ROW 4 -->
+                                <!-- Start - ROW 5 -->
+ 								<tr>
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="API Maturity">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.API_Maturity__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].API_Maturity__c}" onchange="changeImg(this,'apiMaturitySpan','apiMaturityImg')"></apex:inputField>
+                                        <span id ="apiMaturitySpan"></span>
+                                        <span id = "apiMaturityImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].API_Maturity__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].API_Maturity__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].API_Maturity__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+                                </tr>  
+                                <!-- End - ROW 5 -->                                
+                            </table>
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionitem>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            <!------ --->
+            <hr/>
+            <apex:pageBlock >
+                <apex:pageBlockSection columns="1">
+                    <apex:pageBlockSectionitem >
+                        <apex:outputPanel id="outers" styleClass="panel">
+                            <table class="detailList" align="right" >
+                                <tr>
+                                    <td><apex:outputLabel styleClass="check3" value="Platform and Projects"/></td>
+                                    <td><apex:outputLabel styleClass="check3" value="Org Enablement"/></td>
+                                </tr>
+                            </table>
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionitem>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection columns="1">
+                    <apex:pageBlockSectionitem >
+                        <apex:outputPanel id="outers" styleClass="panel">
+                            <table class="detailList" align="right" >
+                                <!-- Start - ROW 1 -->
+                                <tr>
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="No Product Challenges">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.No_Product_Challenges__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].No_Product_Challenges__c}" onchange="changeImg(this,'prodChallengeSpan','prodChallengeImg')"></apex:inputField>
+                                        <span id ="prodChallengeSpan"></span>
+                                        <span id = "prodChallengeImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].No_Product_Challenges__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].No_Product_Challenges__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].No_Product_Challenges__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="C4E">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.C4E__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].C4E__c}" onchange="changeImg(this,'c4eSpan','c4eImg')"></apex:inputField>
+                                        <span id ="c4eSpan"></span>
+                                        <span id = "c4eImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].C4E__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].C4E__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].C4E__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+                                </tr>
+                                <!-- End - ROW 1 -->
+                                <!-- Start - ROW 2 -->
+                                <tr>
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="Strategic Architect">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.Strategic_Architect__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].Strategic_Architect__c}" onchange="changeImg(this,'strategyArchitectSpan','strategyArchitectImg')"></apex:inputField>
+                                        <span id ="strategyArchitectSpan"></span>
+                                        <span id = "strategyArchitectImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].Strategic_Architect__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].Strategic_Architect__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].Strategic_Architect__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="Evangelism">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.Evangelism__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].Evangelism__c}" onchange="changeImg(this,'evangelismSpan','evangelismImg')"></apex:inputField>
+                                        <span id ="evangelismSpan"></span>
+                                        <span id = "evangelismImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].Evangelism__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].Evangelism__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].Evangelism__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+                                </tr>
+                                <!-- End - ROW 2 -->
+                                <!-- Start - ROW 3 -->
+                                <tr>
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="In Production">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.In_Prod__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].In_Prod__c}" onchange="changeImg(this,'inProdSpan','inProdImg')"></apex:inputField>
+                                        <span id ="inProdSpan"></span>
+                                        <span id = "inProdImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].In_Prod__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].In_Prod__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].In_Prod__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="Reuse/Exchange">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.Reuse_Exchange__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].Reuse_Exchange__c}" onchange="changeImg(this,'reuseSpan','reuseImg')"></apex:inputField>
+                                        <span id ="reuseSpan"></span>
+                                        <span id = "reuseImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].Reuse_Exchange__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].Reuse_Exchange__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].Reuse_Exchange__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <!-- End - ROW 3 -->
+                                <!-- Start - ROW 4 -->
+                                <tr>
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="First Proof of Success">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.First_Proof_of_Success__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].First_Proof_of_Success__c}" onchange="changeImg(this,'proofOfSuccessSpan','proofOfSuccessImg')"></apex:inputField>
+                                        <span id ="proofOfSuccessSpan"></span>
+                                        <span id = "proofOfSuccessImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].First_Proof_of_Success__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].First_Proof_of_Success__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].First_Proof_of_Success__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="Internal Support">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.Internal_Support__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].Internal_Support__c}" onchange="changeImg(this,'intSupportSpan','intSupportImg')"></apex:inputField>
+                                        <span id ="intSupportSpan"></span>
+                                        <span id = "intSupportImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].Internal_Support__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].Internal_Support__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].Internal_Support__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <!-- End - ROW 4 -->
+                                <!-- Start - ROW 5 -->
+                                <tr>
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="IT Roadmap">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.IT_Roadmap__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].IT_Roadmap__c}" onchange="changeImg(this,'itRoadMapSpan','itRoadMapImg')"></apex:inputField>
+                                        <span id ="itRoadMapSpan"></span>
+                                        <span id = "itRoadMapImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].IT_Roadmap__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].IT_Roadmap__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].IT_Roadmap__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+
+                                    <td class="labelCol" ><apex:outputLabel styleClass="check" value="Training">
+                                            <a href="#"  data-toggle="popover" data-trigger="hover" data-content="{!$ObjectType.account.fields.Training__c.InlineHelpText}">
+                                                <apex:image url="{!$Resource.questionmark}" width="15" height="15"/>
+                                            </a>
+                                        </apex:outputLabel>
+                                    </td>
+                                    <td><apex:inputField styleClass="check" value="{!accounts[0].Training__c}" onchange="changeImg(this,'trainingSpan','trainingImg')"></apex:inputField>
+                                        <span id ="trainingSpan"></span>
+                                        <span id = "trainingImg">
+                    <apex:image url="/img/samples/color_green.gif" width="20" height="20" rendered="{!IF(accounts[0].Training__c ='Yes',true,false)}"/>
+                    <apex:image url="/img/samples/color_yellow.gif" width="20" height="20" rendered="{!IF(accounts[0].Training__c ='WIP',true,false)}"/>
+                    <apex:image url="/img/samples/color_red.gif" width="20" height="20" rendered="{!IF(accounts[0].Training__c ='No',true,false)}"/>
+                    <apex:outputText rendered="{!IF(accounts[0].Account_Plan__c ='',true,false)}"></apex:outputText>
+                  </span>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <!-- End - ROW 5 -->
+                            </table>
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionitem>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            <hr/>
+        </apex:form>
+    </div>
+    </body>
+</apex:page>

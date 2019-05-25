@@ -1,0 +1,2 @@
+<apex:page standardController="Temporary_Entitlement_History__c" extensions="CMsViewLicenseKeyRedirectCtrl" action="{!url}">
+</apex:page>

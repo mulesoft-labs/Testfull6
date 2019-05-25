@@ -1,0 +1,13 @@
+<apex:page controller="CopyDocumentsAsAttachments">
+
+
+
+
+<apex:form >
+	
+		<apex:commandButton value="Deep Clone Project" action="{!deepCloneProject}"/>
+		<apex:commandButton value="Copy Documents" action="{!runCopy}"/>
+		
+</apex:form>
+
+</apex:page>

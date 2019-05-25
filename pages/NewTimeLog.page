@@ -1,0 +1,265 @@
+<apex:page standardController="Time_log__c" extensions="NewTimeLogController">
+
+
+<script>
+
+function setFocusOnLoad() {};
+
+</script>
+
+<apex:form >
+<apex:sectionHeader title="Project Reporting" subtitle="Project Reporting"/>
+<apex:pageBlock title="Project Reporting" mode="edit">
+        <apex:pageMessages />
+
+
+<!-- <apex:inputField value="{!log.Project__c}"/> -->
+
+
+
+<apex:pageBlockSection title="Information" collapsible="true" columns="1" >
+
+
+<actionRegion>
+
+<apex:outputPanel >
+
+
+<apex:selectList size="1" value="{!selectedProjectId}">
+
+ 
+     <apex:OutputLabel value="Select Project: " style="font-weight:bold" ></apex:OutputLabel>
+     	<apex:selectOptions value="{!ActiveProjects}"></apex:selectOptions>
+         <apex:actionSupport event="onchange"  rerender="top, blocker, wi"  status="StatusChange" />
+        
+    </apex:selectList>
+    <apex:actionStatus startText="Please wait ..." id="StatusChange"/>
+
+</apex:outputPanel>   
+
+</actionRegion>
+
+
+<apex:outputPanel id="top" >
+
+
+<apex:pageBlockSection rendered="{!isselectedprojectnull==false}" >
+
+
+
+
+<apex:outputPanel layout="block" styleClass="requiredInput" rendered="{!isiAppProject==false&&isprojectExternal==false}">
+
+        <apex:outputPanel layout="block" styleClass="requiredBlock"/>
+<apex:selectList size="1" value="{!selectedWorkCategory}"  >
+ 
+     <apex:OutputLabel value="Select Project Work Category: " style="font-weight:bold" ></apex:OutputLabel>
+     	<apex:selectOptions value="{!projectWorkCategories}"></apex:selectOptions>
+        
+    </apex:selectList>
+    
+    </apex:outputPanel>
+    
+    <apex:outputPanel rendered="{!isProjectManager==true}">
+
+
+
+
+<apex:selectList size="1" value="{!selectedEmployee}"  >
+ 
+     <apex:OutputLabel value="Enter As Employee: " style="font-weight:bold" ></apex:OutputLabel>
+     	<apex:selectOptions value="{!projectEmployees}"></apex:selectOptions>
+        
+    </apex:selectList>
+
+</apex:outputPanel>
+    
+    
+    </apex:pageBlockSection>
+    
+    
+
+<apex:pageBlockSection rendered="{!hasDeliverables==true}" >
+	
+<apex:selectList size="1" value="{!selectedCustomerDeliverable}"  id="cds" >
+ 
+     <apex:OutputLabel value="Select Customer Deliverable: " style="font-weight:bold" ></apex:OutputLabel>
+     	<apex:selectOptions value="{!projectCustomerDeliverables}"></apex:selectOptions>
+        
+    </apex:selectList>
+
+</apex:pageBlockSection>    
+    </apex:outputPanel>
+    
+    
+       
+    
+    
+    <apex:outputPanel id="wi">
+    <apex:pageBlockSection rendered="{!hasWorkItems==true}" columns="6">
+    
+     <table>
+    <tr>
+    <td>
+    <apex:selectList size="1" value="{!selectedWorkItem}"  id="wis" >
+ 
+     <apex:OutputLabel value="Select Work Item: " style="font-weight:bold" ></apex:OutputLabel>
+     	<apex:selectOptions value="{!workItems}"></apex:selectOptions>
+     	
+        
+    </apex:selectList>
+   </td>
+    <td>
+    <apex:OutputLabel value="Set Work Item to Completed? " style="font-weight:bold" ></apex:OutputLabel>
+    </td>
+    <td>
+    <apex:inputCheckBox value="{!completeWorkItem}"/>
+    </td>
+    </tr>
+    </table>
+    </apex:pageBlockSection>
+
+</apex:outputPanel>
+
+
+
+<apex:inputField value="{!log.Date__c}" required="true"/>
+
+
+
+
+
+
+
+<!-- 
+<apex:pageBlockSection columns="1">
+<apex:selectList size="1" value="{!billas}">
+ 
+     <apex:OutputLabel value="Bill As: " style="font-weight:bold"></apex:OutputLabel>
+     <apex:selectOptions value="{!billAsList}"></apex:selectOptions>
+        
+    </apex:selectList>
+    </apex:pageBlockSection>
+    
+    
+ -->
+
+<apex:outputPanel rendered="{!isPortalUser==false}"	>
+<apex:outputLabel value="Update Project Chatter Stream" for="chatter"/>
+<apex:inputCheckBox value="{!log.Update_Project_Chatter_Stream__c}" id="chatter" selected="true"/>
+
+
+</apex:outputPanel>
+
+</apex:pageBlockSection>
+
+
+ <apex:outputPanel id="blocker">
+        <apex:pageBlockSection rendered="{!isiAppProject==true}" columns="1">
+
+			
+			<apex:inputField value="{!log.Blockers__c}" style="width:350px;height:100px"/> 
+			
+						<apex:inputField value="{!log.Assigned_to__c}"/>
+						
+						
+			<apex:inputField value="{!log.Blockers_Status__c}" />			       	                	
+        	
+        </apex:pageBlockSection>
+        
+        
+        </apex:outputPanel>
+
+<apex:outputPanel >
+<apex:pageblockSection title="Daily Status Update" columns="1" >
+
+
+<apex:OutputLabel value="Update: " style="font-weight:bold" ></apex:OutputLabel>
+<apex:outputPanel layout="block" styleClass="requiredInput">
+        <apex:outputPanel layout="block" styleClass="requiredBlock"/>
+
+
+<apex:inputField value="{!log.Status_Update__c}" style="width:600px;height:200px" />
+
+</apex:outputPanel>
+
+
+<apex:inputField value="{!log.Hours__c}"/>
+
+<apex:commandButton value="Save" action="{!save}"/>
+
+
+
+</apex:pageblockSection>
+</apex:outputPanel>
+
+</apex:pageBlock>
+
+</apex:form>
+
+
+<!-- 
+<apex:form >
+
+<apex:pageBlock >
+
+<apex:pageblockSection title="Report and Create Issue" columns="1">
+
+<apex:inputField value="{!newCase.subject}" />
+
+<apex:inputField value="{!newCase.description}"  style="width:500px;height:100px"/>
+
+<apex:inputField value="{!newCase.priority}" />
+
+<apex:commandButton value="Save Case" action="{!saveCase}"/>
+
+
+</apex:pageblockSection>
+
+
+
+</apex:pageBlock>
+
+</apex:form>
+ -->
+
+
+
+
+
+<apex:form >
+<apex:pageBlock >
+
+<!-- 
+
+<apex:pageblockSection title="Enter Expense" columns="1">
+
+
+
+
+
+<apex:inputField value="{!expense.Date__c}" required="true"/>
+
+<apex:inputField value="{!expense.Amount__c}" required="true"/>
+
+<apex:inputField value="{!expense.Description__c}" style="width:500px;height:100px" required="true" />
+
+	
+<apex:commandButton value="Save" action="{!saveExpense}"/>
+
+
+</apex:pageblockSection>
+-->
+</apex:pageBlock>
+
+
+ 
+
+</apex:form>
+
+
+
+
+
+ 
+</apex:page>

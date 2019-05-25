@@ -1,0 +1,8 @@
+<apex:page standardController="AnypointUser__c">
+  <apex:iframe rendered="{!IF((AnypointUser__c.CSId__c != ''), true, false)}"
+    src="https://app.kissmetrics.com/salesforce/people/find/{!AnypointUser__c.CSId__c}?mode=embedded&key=72f95fe62e8491759a3c96d60896bb692a0de91b&secret=bcec46afd901e64157e90a43b504bbb27c8641d6"
+    width="100%"
+    scrolling="true"
+    height="500px"
+  />
+</apex:page>

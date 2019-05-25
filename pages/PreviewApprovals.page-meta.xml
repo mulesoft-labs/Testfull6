@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>44.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>Custom Visualforce Page for Preview Approvals</description>
+    <label>PreviewApprovals</label>
+    <packageVersions>
+        <majorNumber>214</majorNumber>
+        <minorNumber>12</minorNumber>
+        <namespace>SBQQ</namespace>
+    </packageVersions>
+    <packageVersions>
+        <majorNumber>3</majorNumber>
+        <minorNumber>0</minorNumber>
+        <namespace>sbaa</namespace>
+    </packageVersions>
+</ApexPage>

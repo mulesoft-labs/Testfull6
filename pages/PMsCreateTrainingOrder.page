@@ -1,0 +1,74 @@
+<apex:page standardController="Account"
+           extensions="CMsCreateTrainingOrderCtrl">
+    <script>
+        var accId = "{!Account.Id}";
+    	var trainingOrderPrompt = "{!trainingOppsCreationPromptMsg}";
+        var proceed = confirm(trainingOrderPrompt);
+	    if(proceed){
+        	generateOnlineTrainingOrders(accId);
+		} else {
+            window.top.location = "/"+ accId;
+        }
+
+        function generateOnlineTrainingOrders(accId)  {
+            Visualforce.remoting.Manager.invokeAction(
+                    'CMsCreateTrainingOrderCtrl.generateOnlineTrainingOrders',
+                     accId,
+                     function(result, event){
+			        	setTimeout(function(){
+            			window.top.location = "/"+ accId;
+                        }, 
+                        5000);
+                    },
+                {escape: true}
+            );
+       }
+    
+$Lightning.use('c:myApp', function() {
+    $Lightning.createComponent(
+            'c:myComponent',
+            {id: '{! $CurrentPage.parameters.id }'},
+            "lightning",
+            function() {document.getElementById('spinner').style.display = 'none';}
+    );
+});
+</script>
+<style>
+
+    #auraLoadingBox.auraMsgBox {
+        display: block;
+        width: 100%;
+        margin: 120px auto 0;
+        background-color: #d3d7dc;
+        z-index: 1002;
+        border-radius: 5px;
+        box-shadow: 0 20px 40px rgba(0,0,0,.8),inset 0 1px 1px rgba(255,255,255,.3);
+        overflow: hidden
+    }
+
+    #auraLoadingBox.auraMsgBox h2 {
+        font-weight: 700;
+        font-size: 1.1em;
+        line-height: 1.3em;
+        margin: 2px;
+        padding: 5px;
+        overflow: hidden
+    }
+
+    #auraLoadingBox.auraLoadingBox {
+        text-align: center;
+        width: 400px;
+        line-height: 80px
+    }
+</style>
+<apex:slds />
+<div id="spinner" class="slds-spinner_container"  style="top: 80px; position: relative;">
+    <div role="status" class="slds-spinner slds-spinner--medium slds-spinner--brand">
+        <div class="slds-spinner__dot-a"></div>
+        <div class="slds-spinner__dot-b"></div>
+    </div>
+</div>
+<div id="auraLoadingBox" class="auraMsgBox auraLoadingBox">
+    <h2>Creating Online Training Order, Please wait ...</h2>
+</div>        
+</apex:page>

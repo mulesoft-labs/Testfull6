@@ -1,0 +1,13 @@
+<apex:page contentType="text/plain">
+#
+# modified robots.txt for SFDC communities sites
+#
+# For use by salesforce.com
+#
+User-agent: *    # applies to all robots
+Disallow: */secur/forgotpassword.jsp?*
+Disallow: /    # hides everything from ALL bots
+Allow: /s      # allow all only for Support Center site
+
+Sitemap: https://support.mulesoft.com/s/sitemap.xml
+</apex:page>

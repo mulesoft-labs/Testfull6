@@ -1,0 +1,58 @@
+<apex:page standardController="Opportunity"
+           extensions="CMsBookingController" tabStyle="Opportunity">
+  <head>
+  <!-- Import the Design System style sheet -->
+  <apex:slds />
+  </head>  
+   <!-- REQUIRED SLDS WRAPPER -->
+  <div class="slds-scope">    
+    <apex:sectionHeader title="Opportunity Review" subtitle="Step 4 of 4"/>
+  <apex:form >
+    <apex:pageBlock title="Opportunity Review" mode="edit">
+      <apex:pageBlockButtons >
+        <apex:commandButton action="{!backToStep3}" value="Back"/>
+        <apex:commandButton action="{!cancel}" value="Return to Parent Opportunity"/>
+      </apex:pageBlockButtons>                   
+      <apex:pageBlockSection >
+      	<apex:pageBlockSectionItem >
+			<apex:outputLabel >Parent Opportunity</apex:outputLabel>
+            <apex:outputLink value="/{! opportunity.Id }">{! opportunity.Name }</apex:outputLink>
+          </apex:pageBlockSectionItem>
+          <apex:outputField value="{!opportunity.Mulesoft_ACV__c}"/>
+        </apex:pageBlockSection>   
+      <apex:pageBlockSection title="Child Opportunity Review" collapsible="false" columns="1">
+      	<apex:outputText value="Please review the Opportunities created : "/>
+      </apex:pageBlockSection>
+
+        <apex:outputPanel id="ChildOppsList"> 
+            <apex:repeat value="{!childOppsAll}" var="oppty" >
+                <apex:pageBlockSection title="{!oppty.Name}" collapsible="false" columns="1">
+                <apex:facet name="header">
+                <apex:outputpanel >
+                	<apex:outputText style="font-weight:bold;font-size:13px;float:left;" value="{!oppty.Name}"/>
+                	<apex:commandLink style="Float:right;" value="Edit Child Opp" action="{!backToStep2}" reRender="f"/>
+                </apex:outputpanel>
+                </apex:facet>                
+                    <apex:pageBlockSectionItem >
+                    	<apex:outputLabel >Child Opp</apex:outputLabel>
+            			<apex:outputLink value="/{! oppty.Id }">{! oppty.Name }</apex:outputLink>
+                    </apex:pageBlockSectionItem><br/>
+
+                    <apex:outputField value="{!oppty.stageName}"/>                                
+                    <apex:outputField value="{!oppty.Type}"/>                                                       
+                    <apex:outputField value="{!oppty.CloseDate}"/>   
+                    <apex:outputField value="{!oppty.Total_Subscription_List__c}"/>
+                    <apex:outputField value="{!oppty.Mulesoft_ACV__c}"/>          
+                    <apex:outputField value="{!oppty.Future_Dated_Order__c}"/>                    
+                    <apex:outputField value="{!oppty.Multi_Year_Deal__c}"/>
+                    <apex:outputField value="{!oppty.If_yes_Year_X_of_Total_Years__c}"/>
+                    <apex:outputField label="Quote Start Date" value="{!oppty.SBQQ__PrimaryQuote__r.SBQQ__StartDate__c}"/>
+                    <apex:outputField label="Quote End Date" value="{!oppty.SBQQ__PrimaryQuote__r.SBQQ__EndDate__c}"/>                   
+                </apex:pageBlockSection>
+            </apex:repeat>
+        </apex:outputPanel>
+    </apex:pageBlock>
+  </apex:form>
+  </div>
+  <!-- / REQUIRED SLDS WRAPPER -->      
+</apex:page>

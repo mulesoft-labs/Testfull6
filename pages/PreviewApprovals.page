@@ -1,0 +1,25 @@
+<apex:page standardController="SBQQ__Quote__c" extensions="QuoteExtController" action="{!onPreview}" sidebar="false" standardStylesheets="
+false" title="Preview Approvals">
+   <apex:stylesheet value="{!$Resource['sbaa__sb']}"/>
+   <style>
+       body .pbBody {
+           background-color: #F8F8F8 !important;
+       }
+   </style>
+   <apex:pageMessages id="showmsg"></apex:pageMessages>
+   <apex:form >
+       <div id="sbPreviewApprovals" class="sb">
+           <sbaa:pageHeader title="Preview Approvals" subtitle="{!SBQQ__Quote__c.Name}" formFactor="desktop" iconName="sf-icon-approval">
+               <div class="sbButtons">
+                   <!--<apex:commandButton styleClass="sbBtn" value="Submit for Approval" action="{!onSubmit}"  rendered="{!if(SBQQ__Quote__c.Ready_to_submit_for_approvals__c=='Yes',true,false)}" />-->
+                   <apex:commandButton styleClass="sbBtn" value="Return to Quote" action="{!cancel}"/>
+               </div>
+           </sbaa:pageHeader>
+       </div>
+       <apex:pageBlock mode="maindetail">
+           <apex:pageBlockSection columns="1" showHeader="false">
+               <sbaa:approvalPreview approvals="{!approvals}"/>
+           </apex:pageBlockSection>
+       </apex:pageBlock>
+   </apex:form>
+</apex:page>

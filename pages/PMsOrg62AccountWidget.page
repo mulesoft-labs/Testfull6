@@ -1,0 +1,215 @@
+<apex:page standardController="Account" extensions="CMsOrg62AccountWidgetOnAccController" sidebar="false" >    
+    <style>
+      td {
+      	vertical-align:top !important;
+      }
+    </style>  
+    <apex:pageBlock >
+    <apex:outputText rendered="{!(org62Accounts.size = 0)}" value="{!$Label.Org62_Account_Error}"/>        
+    <apex:PageBlockTable value="{!org62Accounts}" var="Org62Account" rendered="{!(org62Accounts.size != 0)}">         
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="Owner Name"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Account__x.fields.OwnerId__c.InlineHelpText}"/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.OwnerName}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.OwnerName = null)}"/>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="Owner Email"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Account__x.fields.Owner_r__c.InlineHelpText}"/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.OwnerEmail}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.OwnerEmail = null)}"/>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="Manager Name"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="The Salesforce Core AE Manager Name assigned to the account."/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.ManagerName}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.ManagerName = null)}"/>
+        </apex:column>
+        <apex:column >
+            <div style = "width: 100px">                
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="Owner Role"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Account__x.fields.Account_Owner_Role__c.InlineHelpText}"/>
+                </apex:outputPanel>
+            </apex:facet>
+            </div>
+            <apex:outputText value="{!Org62Account.AccountOwnerRole}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.AccountOwnerRole = null)}"/>
+        </apex:column>        
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="Core CSM Name"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="Customer Success Manager (CSM) or Success Account Manager (SAM) for general Salesforce.com solutions."/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.CSM_Name}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.CSM_Name = null)}"/>
+        </apex:column>        
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="Core CSM Email"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="Email of Customer Success Manager (CSM) or Success Account Manager (SAM) for general Salesforce.com solutions."/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.CSM_Email}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.CSM_Email = null)}"/>
+        </apex:column> 
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="Platform AE Name"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="Platform AE Name."/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.pae_Name}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.pae_Name = null)}"/>
+        </apex:column>         
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="Platform AE Email"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="Platform AE Email."/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.pae_Email}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.pae_Email = null)}"/>
+        </apex:column>         
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="Portfolio Success Manager"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Account__x.fields.CSG_Portfolio_Success_Manager__c.InlineHelpText}"/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.PorfolioSuccessManager}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.PorfolioSuccessManager = null)}"/>
+        </apex:column>         
+
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="CPQ AE Name"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="CPQ stands for Configure, Price, and Quote."/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.cpqae_Name}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.cpqae_Name = null)}"/>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="CPQ AE Email"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="CPQ stands for Configure, Price, and Quote."/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.cpqae_Email}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.cpqae_Email = null)}"/>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="AOV Band"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Account__x.fields.AOV_Band_c__c.InlineHelpText}"/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.AOV_Band}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.AOV_Band = null)}"/>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="Account Partner"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Account__x.fields.Success_Partner_c__c.InlineHelpText}"/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.Success_Partner}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.Success_Partner = null)}"/>
+        </apex:column>   
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="Core Edition"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Account__x.fields.Core_Edition__c.InlineHelpText}"/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.Core_Edition}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.Core_Edition = null)}"/>
+        </apex:column>  
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="Customer Status"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Account__x.fields.Customer_Status__c.InlineHelpText}"/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.CustomerStatus}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.CustomerStatus = null)}"/>
+        </apex:column>  
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="Rating"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Account__x.fields.Rating__c.InlineHelpText}"/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.Rating}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.Rating = null)}"/>
+        </apex:column> 
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="Region"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Account__x.fields.Region_c__c.InlineHelpText}"/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.Region}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.Region = null)}"/>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="CSG Region AOV Band"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Account__x.fields.Region_AOV_Band_c__c.InlineHelpText}"/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.Region_AOV_Band}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.Region_AOV_Band = null)}"/>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="CSG Premier AOV Band"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Account__x.fields.Premier_AOV_Band_c__c.InlineHelpText}"/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.Premier_AOV_Band}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.Premier_AOV_Band = null)}"/>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">
+                <apex:outputPanel >
+                    <apex:outputText value="Industry"/>
+                    <apex:image url="{!$Resource.questionmark}" width="12" height="12" title="{!$ObjectType.Org62_Account__x.fields.Industry__c.InlineHelpText}"/>
+                </apex:outputPanel>
+            </apex:facet>        
+            <apex:outputText value="{!Org62Account.Industry}" />
+            <apex:outputText value="N/A" rendered="{!(Org62Account.Industry = null)}"/>
+        </apex:column>  
+    </apex:PageBlockTable>        
+</apex:pageBlock>
+</apex:page>

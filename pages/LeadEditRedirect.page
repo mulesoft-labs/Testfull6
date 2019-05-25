@@ -1,0 +1,2 @@
+<apex:page standardController="Lead" extensions="customLeadEditExtension"  action="{!getRedir}">
+</apex:page>

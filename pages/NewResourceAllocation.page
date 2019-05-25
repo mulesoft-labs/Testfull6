@@ -1,0 +1,26 @@
+<apex:page standardController="Resource_Allocation__c" extensions="NewResourceAllocationController">
+
+<apex:form >
+
+<apex:pageBlock >
+<apex:pageBlockButtons >
+<apex:commandButton value="Save" action="{!saveRa}"/>
+</apex:pageBlockButtons>
+
+<apex:pageBlockSection >
+<apex:inputField value="{!ra.Employee__c}"/>
+
+<apex:selectList id="mgr" value="{!roleId}" size="1" >
+                        <apex:selectOptions value="{!roles}"></apex:selectOptions>
+            </apex:selectList>
+
+
+
+</apex:pageBlockSection>
+</apex:pageBlock>
+</apex:form>
+
+
+
+ 
+</apex:page>

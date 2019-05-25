@@ -1,0 +1,16 @@
+<apex:page standardController="Lead" extensions="customLeadEditExtension">
+  <apex:form >
+      <apex:pageblock >  
+      <apex:pageBlockButtons >
+               
+                <apex:commandButton action="{!saveLeadandAprroval}" value="Save and Submit"/>
+                 <apex:commandButton action="{!saveLead}" value="Save as Draft"/>
+            </apex:pageBlockButtons>  
+          <apex:pageBlockSection title="Lead Detail">
+             <apex:repeat value="{!$ObjectType.Lead.fieldsets.CustomEditPageFieldSet}" var="fieldValue">
+                 <apex:Inputfield value="{!Lead[fieldValue]}" required="{!OR(fieldValue.required, fieldValue.dbrequired)}"/>
+             </apex:repeat>
+          </apex:pageBlockSection>
+      </apex:pageblock>
+    </apex:form>
+</apex:page>

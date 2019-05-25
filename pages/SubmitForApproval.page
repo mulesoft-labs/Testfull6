@@ -1,0 +1,37 @@
+<apex:page StandardController="Opportunity" extensions="SubmitForApprovalExtensions" action="{!submitPage}">
+    <apex:form >
+        <style type="text/css">
+           body .bPageBlock {
+            	background: white !important;
+            }
+        </style>
+        <apex:pageMessages escape="false"></apex:pageMessages>    
+        <apex:pageBlock id="pblock">
+            <apex:commandLink action="{!backToOpportunity}" value="Return to Opportunity" style="float:right;font-size: medium;"/>
+            <br/><br/>
+            <apex:repeat value="{!fieldSetNameToFieldsMap}" var="fs">
+                <apex:pageBlockSection title="{!fs}" rendered="{!fs == 'Opportunity Detail'}">
+                	<apex:repeat value="{!fieldSetNameToFieldsMap[fs]}" var="fsm">                        
+                    	<apex:outputField value="{!opp[fsm.fieldPath]}" />
+                    </apex:repeat>
+                </apex:pageBlockSection>
+            	<apex:pageBlockSection title="{!fs}" columns="1" rendered="{!NOT(fs == 'Opportunity Detail')}">
+                	<apex:repeat value="{!fieldSetNameToFieldsMap[fs]}" var="fsm">                        
+                        <apex:inputField value="{!opp[fsm.fieldPath]}" 
+                                         rendered="{!NOT(OR(fsm.fieldPath == 'AE_Connect_Completed__c', 
+                                                   fsm.fieldPath == 'C_level_Connect_Completed__c',
+                                                   fsm.fieldPath == 'Follow_on_meeting_scheduled__c'))}"/>    
+                        <apex:outputField value="{!opp[fsm.fieldPath]}" 
+                                         rendered="{!(OR(fsm.fieldPath == 'AE_Connect_Completed__c', 
+                                                   fsm.fieldPath == 'C_level_Connect_Completed__c',
+                                                   fsm.fieldPath == 'Follow_on_meeting_scheduled__c'))}"/>    
+                    </apex:repeat>
+                </apex:pageBlockSection>
+            </apex:repeat>
+            <apex:pageBlockButtons >
+            	<apex:commandButton action="{!saveOpportunity}" value="Save"/>
+                <apex:commandButton action="{!submitForApproval}" value="Submit For Approval" />
+            </apex:pageBlockButtons>            
+        </apex:pageBlock>               
+    </apex:form>
+</apex:page>

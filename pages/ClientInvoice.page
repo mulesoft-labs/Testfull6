@@ -1,0 +1,505 @@
+<apex:page standardController="Invoice__c" extensions="ClientInvoiceController" standardStyleSheets="false" showHeader="false" renderas="pdf">
+
+     <apex:styleSheet value="{!URLFOR($Resource.invoicestyle)}"/>
+     
+   <head>
+
+<style type="text/css" media="print">
+
+@page {
+
+@top-center {
+
+content: element(header);
+
+}
+
+@bottom-left {
+
+  content: element(footer);
+
+}
+
+}
+
+ 
+
+div.header {
+
+padding: 10px;
+
+position: running(header);
+
+}
+
+div.footer {
+
+display: block;
+
+padding: 5px;
+
+position: running(footer);
+
+}
+
+ 
+
+.pagenumber:before {
+
+content: counter(page);
+
+}
+
+.pagecount:before {
+
+content: counter(pages);
+
+}
+
+</style>
+
+</head> 
+
+
+
+
+ 
+
+<div class="footer">
+
+<div>Page <span class="pagenumber"/> of <span class="pagecount"/></div>
+
+</div> 
+
+    <div class="content">
+
+<table border="0" cellspacing="0" cellpadding="0" width="100%" id="table1">
+
+<tr>
+
+    <td>
+    
+        <img src='{!URLFOR($Resource.invoicelogo)}' title="logo" />
+    </td>
+    <td  align="right">
+    <b>Invoice for {!Account.Name}</b><br/><br/>
+    Date: <apex:OutputText value="{!MONTH(TodaysDate)}/{!DAY(TodaysDate)}/{!YEAR(TodaysDate)}"/><br/>
+    <b>Total Due:</b>
+      <apex:outputText value="{0,number,$,##0.00}"  >
+                                       <apex:param value="{!invoice.Total_Due__c}" />
+      </apex:outputText>
+    </td>
+    
+    
+    
+</tr>
+
+<hr/>
+
+</table>
+<table border="0" cellspacing="0" cellpadding="0" width="100%" id="table1">
+<tr>    <td>
+        {!$Organization.Name}<br/>
+        
+        {!$Organization.Street}<br/>
+        {!$Organization.City}, {!$Organization.State} {!$Organization.PostalCode}<br/>
+
+        </td> 
+        <td width="60%"  align="right"> 
+
+
+   Invoice Number: {!invoice.Invoice_Number__c}<br/><br/>
+   
+   Client PO: {!invoice.Client_PO__c}<br/>
+   
+        <br/>
+   Payment Terms: <b>{!invoice.Payment_Terms__c}</b><br/>
+              
+          
+        <br/>
+
+     </td>
+</tr>
+</table>
+<br/>
+<hr/>
+<p><b>Address Information</b></p>
+
+
+<table border="0" width="100%" id="table2">
+<tr>
+       <td colspan="3">
+           {!Account.Name}<br/>
+                             {!Account.Billing_Attention_Of__c}<br/>
+                             {!Account.BillingStreet}<br/>
+                             {!Account.BillingCity},{!Account.BillingState}
+                             {!Account.BillingPostalCode} 
+                             
+
+        </td>
+        <td width="50%"></td>
+       <!-- <td >
+           <font face="Arial">Ship To:<br/>
+                              {!Opportunity.Account.ShippingStreet}<br/>
+                              {!Opportunity.Account.ShippingPostalCode} {!Opportunity.Account.ShippingCity}
+           </font>
+        </td>-->
+</tr>    
+</table>
+<br/>
+<hr/>
+<apex:outputPanel rendered="{!renderFixedFee}">
+
+<p><b>Services</b></p>
+<table border="0" width="100%" id="table4">
+<tr>
+
+       <td bgcolor="#C0C0C0">Date</td>
+       <td width="100%" bgcolor="#C0C0C0">Description</td>
+
+       <td width="150px" bgcolor="#C0C0C0">Amount</td>
+</tr>
+<tr>
+       <apex:repeat value="{!ffLogs}" var="time">
+          <tr>
+          
+          <td>
+                <apex:outputPanel rendered="{!ISBLANK(time.Date__c)}">
+          
+                       -------
+          
+          </apex:outputPanel>
+          
+          
+          <apex:outputPanel rendered="{!!ISNULL(time.Date__c)}">
+          
+                       {!MONTH(time.Date__c)}/{!DAY(time.Date__c)}/{!YEAR(time.Date__c)}
+          
+          </apex:outputPanel>
+          </td>
+                         
+             <td><apex:OutputField value="{!time.Description__c}"/></td>
+             
+             
+               <td>
+              <apex:outputText rendered="{!OR(IF(time.Amount__c==0,True,False))}"></apex:outputText>
+                                      <apex:outputText rendered="{!OR(IF(time.Amount__c!=0,True,False))}" value="{0,number,$,##0.00}">
+                                <apex:param value="{!time.Amount__c}" />
+                                </apex:outputText>
+                                </td>
+             
+               <!--  <td><apex:outputText value="{0,number,$,##0.00}"  >
+                                       <apex:param value="{!time.Amount__c}" />
+               </apex:outputText> </td>
+                -->
+             
+          
+                
+          </tr>
+       </apex:repeat>
+       
+
+
+
+<tr>
+
+<td/>
+
+
+<td/>
+
+
+<td bgcolor="#C0C0C0" >
+       <b>Subtotal</b>
+
+</td>
+</tr>
+<tr>
+
+<td width="150px" bgcolor="#ffffff" align="right" colspan="6">
+
+                                      <apex:outputText rendered="true" value="{0,number,$,##0.00}">
+                                <apex:param value="{!totalServiceItems}" />
+                                </apex:outputText>
+
+</td>
+
+
+
+</tr> 
+</tr>
+
+<br/>
+
+</apex:outputPanel>
+<apex:outputPanel rendered="{!renderTimeLogs}">
+
+
+<p><b>Services</b></p>
+<table border="0" width="100%" id="table4">
+<tr>
+
+       <td bgcolor="#C0C0C0">Date</td>
+        <td width="100px" bgcolor="#C0C0C0">Item</td>
+       <td width="100%" bgcolor="#C0C0C0">Description</td>
+
+       <td bgcolor="#C0C0C0">Quantity</td>
+       <td bgcolor="#C0C0C0">Rate</td>
+       <td width="150px" bgcolor="#C0C0C0">Amount</td>
+</tr>
+
+<tr>
+       <apex:repeat value="{!timeLogs}" var="time">
+          <tr>
+          
+          
+          
+             
+              <apex:outputText rendered="{!OR(IF(time.Amount!=0,True,False))}">
+
+              <td>{!MONTH(time.ItemDate)}/{!DAY(time.ItemDate)}/{!YEAR(time.ItemDate)}</td>
+              </apex:outputText>
+
+             <td>{!time.rateName}</td>
+                         
+             <td><apex:Outputtext value="{!time.Description}"/></td>
+             <td>
+               
+      <apex:outputText value="{0,number,##0.00}"  >
+                                       <apex:param value="{!time.hours}" />
+               </apex:outputText> 
+            
+             </td>
+             <td>
+             
+               <apex:outputText value="{0,number,##0.00}"  >
+                                       <apex:param value="{!time.hourlyRate}" />
+               </apex:outputText> 
+               
+               
+               </td>
+             
+             
+             
+              <td>
+              <apex:outputText rendered="{!OR(IF(time.Amount==0,True,False))}"></apex:outputText>
+                                      <apex:outputText rendered="{!OR(IF(time.Amount!=0,True,False))}" value="{0,number,$,##0.00}">
+                                <apex:param value="{!time.Amount}" />
+                                </apex:outputText>
+                                </td>
+
+             
+          </tr>
+          
+          
+       </apex:repeat>  
+       
+    
+
+
+
+
+<tr>
+
+<td/>
+<td/>
+
+<td/>
+<td/>
+<td/>
+
+<td bgcolor="#C0C0C0" >
+       <b>Subtotal</b>
+
+</td>
+</tr>
+<tr>
+
+<td width="150px" bgcolor="#ffffff" align="right" colspan="6">
+
+                                      <apex:outputText rendered="true" value="{0,number,$,##0.00}">
+                                <apex:param value="{!totalServiceItems}" />
+                                </apex:outputText>
+
+</td>
+
+
+
+</tr>
+
+</table>
+</apex:outputPanel>
+
+
+
+<br/>
+<apex:outputPanel rendered="{!renderCredits}">
+<p><b>Credits</b></p>
+
+<table border="0" width="100%" id="table8">
+
+<tr>
+
+       <td bgcolor="#C0C0C0">Date</td>
+       <td width="100%" bgcolor="#C0C0C0">Description</td>
+
+       <td width="150px" bgcolor="#C0C0C0">Amount</td>
+</tr>
+<tr>
+       <apex:repeat value="{!invoiceCredits}" var="time">
+          <tr>
+          
+             <td>{!MONTH(time.Date__c)}/{!DAY(time.Date__c)}/{!YEAR(time.Date__c)}</td>
+                         
+             <td><apex:OutputField value="{!time.Description__c}"/></td>
+             <td><apex:OutputField value="{!time.Amount__c}"/></td>
+          </tr>
+       </apex:repeat>
+</tr>
+
+<tr>
+<td>
+<br/>
+</td>
+</tr>
+
+
+<tr>
+
+<td/>
+
+<td/>
+
+<td bgcolor="#C0C0C0" >
+       <b>Subtotal</b>
+
+</td>
+</tr>
+<tr>
+
+<td width="150px" bgcolor="#ffffff" align="right" colspan="6">
+                                            <apex:outputText rendered="true" value="{0,number,$,##0.00}">
+                                <apex:param value="{!totalCredits}" />
+                                </apex:outputText>
+
+</td>
+
+
+
+</tr>
+
+</table>
+
+</apex:outputPanel>
+<apex:outputPanel rendered="{!renderExpenses}">
+<p><b>Expenses</b></p>
+</apex:outputPanel>
+
+
+<table border="0" width="100%" id="table9">
+
+<apex:outputPanel rendered="{!renderExpenses}">
+<tr>
+
+       <td bgcolor="#C0C0C0">Date</td>
+       <td width="100%" bgcolor="#C0C0C0">Description</td>
+
+       <td width="150px" bgcolor="#C0C0C0">Amount</td>
+</tr>
+<tr>
+       <apex:repeat value="{!invoiceExpenses}" var="time">
+          <tr>
+          
+             <td>{!MONTH(time.Date__c)}/{!DAY(time.Date__c)}/{!YEAR(time.Date__c)}</td>
+                         
+             <td><apex:OutputField value="{!time.Description__c}"/></td>
+             
+             <td>
+             <apex:outputText rendered="{!OR(IF(time.Amount__c==0,True,False))}">--</apex:outputText>
+                                      <apex:outputText rendered="{!OR(IF(time.Amount__c!=0,True,False))}" value="{0,number,$,##0.00}">
+                                <apex:param value="{!time.Amount__c}" />
+                                </apex:outputText>
+                            
+           </td>
+          </tr>
+       </apex:repeat>  
+</tr>
+
+<tr>
+<td>
+<br/>
+</td>
+</tr>
+
+
+<tr>
+
+<td/>
+
+
+<td/>
+
+<td bgcolor="#C0C0C0" >
+       <b>Subtotal</b>
+
+</td>
+</tr>
+<tr>
+
+<td width="150px" bgcolor="#ffffff" align="right" colspan="6">
+                            <apex:outputText rendered="true" value="{0,number,$,##0.00}">
+                                <apex:param value="{!totalExpenses}" />
+                            </apex:outputText>
+</td>
+
+
+
+</tr>
+
+
+</apex:outputPanel>
+<tr>
+<td height="50px"/>
+</tr>
+
+
+<tr>
+
+
+       <td width="150px" bgcolor="#C0C0C0" align="right" colspan="6">
+       <b>Total Due:</b>
+      <apex:outputText value="{0,number,$,##0.00}"  >
+                                       <apex:param value="{!invoice.Total_Due__c}" />
+               </apex:outputText> </td>
+       
+      
+</tr>
+
+
+</table>
+
+<apex:outputPanel rendered="{!hasLegend}">
+<p><b>Legend</b></p>
+
+<table border="0" width="100%" id="table10">
+
+<apex:repeat value="{!invoicelegends}" var="leg">
+          <tr>
+             <td>
+                 {!leg.Abbreviation__c}={!leg.Full_Description__c}
+             </td>
+          
+          </tr>
+          
+</apex:repeat>
+
+
+</table>
+</apex:outputPanel>
+
+<hr/>
+
+<p align="center"><i>Copyright {!$Organization.Name}.</i></p>
+
+</div>
+</apex:page>

@@ -1,0 +1,3 @@
+<apex:page >
+<apex:enhancedList type="Asset" height="300" rowsPerPage="25" id="AssetList" />
+</apex:page>

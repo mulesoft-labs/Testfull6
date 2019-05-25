@@ -1,0 +1,28 @@
+<apex:component access="global" allowDML="true" controller="getApprovalTable">
+    
+    <apex:attribute name="qId" description="Id of the Quote with Approvals to be display" type="String" assignTo="{!quoteId}"/>
+    <apex:attribute name="fsName" description="Name of the field set associated to the Approval Object. This can be left null." type="String" assignTo="{!field_set_name}"/>
+    
+    <apex:outputPanel rendered="{!Approvals!=null&&Approvals.size>0}">
+        <apex:dataTable value="{!Approvals}" var="a" border="1" cellpadding="3em;" >
+            <!--<apex:column headerValue="Approver">
+                <a href="{!URLFOR($Action.sbaa__Approver__c.View,a.sbaa__Approver__c,null,true)}" target="_blank">{!a.sbaa__Approver__r.Name}</a>
+            </apex:column>-->
+            <apex:column headerValue="Approver">
+                <apex:outputText escape="false" value="{!a.sbaa__AssignedTo__r.Name }" />
+            </apex:column>
+            <apex:repeat value="{!Fields}" var="f">
+                <apex:column headerValue="{!IF(f.label=='Rule2','Approval Requested For',f.label)}">
+                      <apex:outputText escape="false" value="{!a[f]}" />
+                </apex:column>
+            </apex:repeat>
+            <!--
+            <apex:column headerValue="Comments">
+                {!a.sbaa__CommentsLong__c}
+            </apex:column>
+            <apex:column headerValue="Comment History">
+                {!a.Comment_History__c}
+            </apex:column>-->
+        </apex:dataTable>
+    </apex:outputPanel>
+</apex:component>

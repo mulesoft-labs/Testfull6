@@ -1,0 +1,8 @@
+<apex:page standardController="Time_log__c" extensions="BulkUpdateTimeLogController">
+<apex:form >
+<apex:commandButton value="Update" action="{!UpdateTimeLogs}"/>
+
+<apex:commandButton value="Zero Out Projects" action="{!ZeroOutProjects}"/>
+
+</apex:form>
+</apex:page>

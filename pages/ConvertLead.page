@@ -1,0 +1,9 @@
+<apex:page standardController="Lead" extensions="LeadController" action="{!validateForLeadConversion}">
+     <head>
+     	<META http-equiv="refresh" content="5;URL=/{!lead.id}"/>
+     </head>	
+     <apex:pagemessages />
+     <h1>  <a href="/{!lead.id}" >Go back</a>
+     </h1>
+     <apex:detail subject="{!lead.id}" showChatter="true" inlineEdit="true"/>
+</apex:page>

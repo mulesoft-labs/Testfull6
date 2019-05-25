@@ -1,0 +1,59 @@
+<apex:page standardController="Work_Task__c" extensions="NewWorkTaskController">
+
+<apex:form >
+
+<apex:pageBlock >
+
+<apex:pageBlockButtons >
+<apex:commandButton value="Save Work Item" action="{!saveWorkTask}"/>
+</apex:pageBlockButtons>
+
+
+<apex:pageBlockSection title="New Work Task" columns="2">
+
+<apex:inputField value="{!workTask.name}"/>
+
+<apex:inputField value="{!workTask.Due_Date__c}"/>
+
+<apex:inputField value="{!workTask.Description__c}" style="width:300px;height:100px"/>
+
+<apex:inputField value="{!workTask.Hours_Estimate__c}"/>
+
+<!-- 
+<apex:pageBlockSectionItem >
+<apex:pageBlockTable value="{!resources}" var="r" title="Resources" summary="Resources">
+
+<apex:column headerValue="Create Task">
+
+
+<apex:inputField value="{!r.Assigned__c}"/>
+
+</apex:column>
+
+
+<apex:column headerValue="Name">
+
+
+{!r.employee__r.name}
+
+</apex:column>
+
+<apex:column headerValue="Role">
+
+
+{!r.role__r.name}
+
+</apex:column>
+
+</apex:pageBlockTable>
+</apex:pageBlockSectionItem>
+  -->
+
+</apex:pageBlockSection>
+</apex:pageBlock>
+
+
+</apex:form>
+
+
+</apex:page>

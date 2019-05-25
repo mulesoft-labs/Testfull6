@@ -1,0 +1,70 @@
+<apex:page id="CategoriesAssignee" controller="CategoriesAssigneeCtrl" sidebar="false" docType="html-5.0">
+    <apex:slds />
+
+    <div class="slds-scope">
+        <apex:form >
+            <apex:actionFunction action="{!edit}" name="editRecord" reRender="editForm">
+                <apex:param name="username" assignTo="{!createUsername}" value="" />
+                <apex:param name="categories" assignTo="{!createCategoriesString}" value="" />
+            </apex:actionFunction>
+            <apex:actionFunction action="{!remove}" name="deleteRecord" reRender="recordsList">
+                <apex:param name="id" assignTo="{!rId}" value="" />
+            </apex:actionFunction>
+
+            <h1 class="slds-text-heading--large">Ideas Categories Assignee List</h1>
+
+            <apex:messages styleClass="slds-box slds-box--small slds-theme--alert-texture slds-m-bottom--medium" />
+
+            <div class="slds-grid slds-grid--vertical-align-center record-item slds-border--bottom">
+                <div class="slds-p-around--small slds-size--2-of-12"><h3 class="slds-text-heading--small">Username</h3></div>
+                <div class="slds-p-around--small slds-size--4-of-12"><h3 class="slds-text-heading--small">Categories</h3></div>
+                <div class="slds-p-around--small slds-size--2-of-12"></div>
+            </div>
+
+            <apex:outputPanel id="recordsList" styleClass="list">
+                <apex:repeat value="{!records}" var="r">
+                    <div class="slds-grid slds-grid--vertical-align-center record-item slds-border--bottom">
+                        <div class="slds-p-around--small slds-size--2-of-12">{!r.User__r.Username}</div>
+                        <div class="slds-p-around--small slds-size--4-of-12">{!r.Categories__c}</div>
+                        <div class="slds-p-around--small slds-size--2-of-12">
+                            <a href="javascript:void(0)" class="slds-button slds-button--brand"
+                               onclick="editRecord('{!r.User__r.Username}', '{!r.Categories__c}')">Edit</a>
+                            <a href="javascript:void(0)" onclick="deleteRecord('{!r.Id}')"
+                               class="slds-button slds-button--destructive">Remove</a>
+                        </div>
+                    </div>
+                </apex:repeat>
+            </apex:outputPanel>
+
+            <div class="create-form">
+                <h3 class="slds-text-heading--medium slds-m-vertical--medium">Assign categories to user</h3>
+
+                <apex:outputPanel id="editForm">
+                    <div class="slds-box slds-box--small slds-theme--shade">
+                        <div class="slds-grid">
+                            <div class="slds-p-around--small slds-size--2-of-12">
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label" for="usernameInput">Username</label>
+                                    <apex:inputText label="Username" id="usernameInput" value="{!createUsername}" styleClass="slds-input" />
+                                </div>
+                            </div>
+                            <div class="slds-p-around--small slds-size--4-of-12">
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Categories</label>
+                                    <apex:selectList multiselect="true" label="Categories" value="{!createCategories}" styleClass="slds-select">
+                                        <apex:selectOptions value="{!categoryOptions}"/>
+                                    </apex:selectList>
+                                </div>
+                            </div>
+                            <div class="slds-p-around--small slds-size--2-of-12">
+                                <br />
+                                <apex:commandButton value="Save" action="{!save}" styleClass="slds-button slds-button--brand" />
+                            </div>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+            </div>
+        </apex:form>
+    </div>
+
+</apex:page>

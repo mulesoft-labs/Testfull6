@@ -1,0 +1,101 @@
+<apex:page standardController="Opportunity" Extensions="ConnectorRelatedList">
+
+<apex:form id="form">
+     <apex:outputPanel id="popup">
+        <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}"/>
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayPopUp}"  >
+                <div style="text-align:center;">
+                <apex:selectList size="10" value="{!selectedConnectors}" multiselect="true" >
+                    <apex:selectOptions value="{!optionsList}" />
+                </apex:selectList>
+                </div>
+                <div style="text-align:center;">
+                <apex:commandButton value="Add" action="{!AddConnectors}" rerender="form" />
+                <apex:commandButton value="Cancel" action="{!closePopup}" rerender="popup" />
+                </div>
+            </apex:outputPanel>
+        </apex:outputPanel>
+
+    <apex:pageBlock > 
+        <apex:pageMessages />
+        <apex:pageBlockButtons location="top">
+            <apex:commandButton value="Add Connectivity" action="{!showPopup}" rerender="popup"/>
+        </apex:pageBlockButtons>
+        <apex:pageBlockTable value="{!oppConnectors}" var="row" rendered="{!IF(childCount > 0, TRUE, FALSE)}">
+            <apex:column >
+                   <a href="javascript:if (window.confirm('Are you sure?')) {DeleteConnector('{!row.Id}');}" style="font-weight:bold">Del</a>
+            </apex:column>
+            <apex:column headervalue="Connector">
+            <apex:outputLink value="/{!row.Extension__c}" target="_blank">{!row.Extension__r.Name}</apex:outputLink>
+            </apex:column>
+            <apex:column headervalue="Critical">
+            <apex:inputCheckbox value="{!row.Critical__c}" onchange="CriticalizeConnector('{!row.Id}', !{!row.Critical__c})"/>
+            </apex:column>
+
+
+            <apex:column headervalue="Category">
+            <apex:outputText value="{!row.Extension__r.Category__c}"></apex:outputText>
+            </apex:column>
+            <apex:column headervalue="Status">
+            <apex:outputText value="{!IF(row.Extension__r.Status__c=='On Roadmap', row.Extension__r.Status__c + ' (' + row.Extension__r.Planned_Release_Year__c + ', ' + row.Extension__r.Planned_Release_Month__c +')', row.Extension__r.Status__c)}" ></apex:outputText>
+            </apex:column>
+
+            
+       </apex:pageBlockTable>
+        <apex:outputText rendered="{!IF(childCount > 0, FALSE, TRUE)}" styleClass="noRowsHeader"><strong>Please add desired connectivity.</strong> </apex:outputText>        
+    </apex:pageBlock> 
+    
+   
+    <apex:actionFunction action="{!DeleteConnector}" name="DeleteConnector" reRender="form" >
+        <apex:param name="connectorId" value="" assignTo="{!selectedConnectorId}"/>
+    </apex:actionFunction>
+
+    <apex:actionFunction action="{!AddConnectors}" name="AddConnectors" reRender="form" >
+        <apex:param name="connectorIds" value="" assignTo="{!selectedConnectors}"/>
+    </apex:actionFunction>
+    
+    <apex:actionFunction action="{!Criticalize}" name="CriticalizeConnector" reRender="form" >
+        <apex:param name="connectorId" value="" assignTo="{!selectedConnectorId}"/>
+        <apex:param name="critical" value="" assignTo="{!critical}"/>
+    </apex:actionFunction>
+
+    </apex:form>
+
+   <style type="text/css">
+        .custPopup{
+            background-color: white;
+            border-width: 2px;
+            border-style: solid;
+            z-index: 9999;
+            left: 50%;
+            padding:10px;
+            position: absolute;
+            /* These are the 3 css properties you will need to change so the popup 
+            displays in the center of the screen. First set the width. Then set 
+            margin-left to negative half of what the width is. You can add 
+            the height property for a fixed size pop up if you want.*/
+            width: 350px;
+            margin-left: -250px;
+            top:10px;
+            
+        }
+        .popupBackground{
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+        
+    </style>
+
+<!--    <apex:relatedList list="Opportunity_Extensions__r"/>-->
+    
+    
+
+    
+</apex:page>

@@ -1,0 +1,67 @@
+<apex:page standardController="Opportunity"
+           extensions="CMsBookingController" tabStyle="Opportunity">
+  <head>
+  <!-- Import the Design System style sheet -->
+  <apex:slds />
+  </head>  
+  <script>
+  function confirmCancel() {
+      var isCancel = confirm("Are you sure you wish to cancel?");
+      if (isCancel) return true;
+  
+     return false;
+  }  
+  </script>
+   <!-- REQUIRED SLDS WRAPPER -->
+  <div class="slds-scope">    
+  <apex:sectionHeader title="Opportunity Team Member Assignment" subtitle="Step 3 of 4"/>
+  <apex:form >
+    <apex:pageBlock title="Opportunity Team Member Assignment" mode="edit">
+      <apex:pageBlockButtons >
+        <apex:commandButton action="{!step4}" value="Copy Selected" status="pageStatus" />
+        <apex:commandButton action="{!backToStep2}" value="Back"/>          
+          <apex:commandButton action="{!cancel}" value="Cancel" 
+                            onclick="return confirmCancel()" immediate="true"/>
+      </apex:pageBlockButtons>   
+      <apex:actionStatus id="pageStatus">
+    	<apex:facet name="start">
+    		<div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;">
+        		&nbsp;
+    		</div>
+        <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 25% 50%">
+            <div style="display: inline-block; padding: 2px; background-color: #fff; width: 250px;">
+                <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                <span style="display: inline-block; padding: 10px 0px;">Copying Opportunity Team Member...</span>
+            </div>
+        </div>
+        </apex:facet>
+		</apex:actionStatus>          
+        <apex:pageBlockSection >
+      	<apex:pageBlockSectionItem >
+			<apex:outputLabel >Parent Opportunity</apex:outputLabel>
+            <apex:outputLink value="/{!opportunity.Id }">{!opportunity.Name }</apex:outputLink>
+          </apex:pageBlockSectionItem>
+      </apex:pageBlockSection>  
+      <apex:pageBlockSection title="Copy Opportunity Team Member" collapsible="false" columns="1">
+		<apex:outputText style="font-weight: bold;" 
+        value="Here are the Opportunities members associated with the parent opportunity, 
+            select team members to add to child opportunities."/>
+          <br/>
+      </apex:pageBlockSection>
+       <apex:pageBlockSection ></apex:pageBlockSection>
+        <!-- In our table we are displaying the cOpptyTeamMember records -->
+            <apex:pageBlockTable style="width:80%" value="{!opportunityTeamMembers}" var="varOtm" id="table">
+                <apex:column >
+                    <!-- This is our selected Boolean property in our wrapper class -->
+                    <apex:inputCheckbox style="width:20px" value="{!varOtm.selected}"/>
+                </apex:column>
+                <!-- This is how we access the contact values within our wrapperOppTeamMember container/wrapper -->
+                <apex:column value="{!varOtm.otm.Name}" />
+                <apex:column value="{!varOtm.otm.TeamMemberRole}" />
+                <apex:column value="{!varOtm.otm.OpportunityAccessLevel}" />                
+            </apex:pageBlockTable>        
+    </apex:pageBlock>
+  </apex:form>
+  </div>
+  <!-- / REQUIRED SLDS WRAPPER -->      
+</apex:page>
